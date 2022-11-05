@@ -82,11 +82,13 @@ function Basic() {
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
+          {/* tao tk mk  */}
           <MDBox component="form" role="form">
             <MDBox mb={2}>
               <MDInput type="email" label="Email" fullWidth />
             </MDBox>
             <MDBox mb={2}>
+              {/* dung event onChange */}
               <MDInput type="password" label="Password" fullWidth />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
