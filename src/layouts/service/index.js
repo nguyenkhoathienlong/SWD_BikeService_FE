@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import { useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -26,16 +26,48 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 import Footer from "examples/Footer";
 import DataTable from "examples/Tables/DataTable";
+import { Button } from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
-// Data
-import serviceTable from "layouts/service/data/serviceTable";
+// Utils and Service Component
+import serviceTable from "layouts/service/utils/serviceTableGet";
+import ModalDialog from "./components/ModalDialog";
+
 
 function Service() {
+  const [dialog , setDialog] = useState({open:false,type:'', rowData:''})
   const { columns, rows } = serviceTable();
 
+  const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create'}))
+  const handleOpenEditDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true, type:'edit', rowData:row}))
+  const handleOpenDeleteDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true,type:'delete', rowData:row}))
+
+  const handleCloseDialog = () => setDialog( (prev) => ({...prev, open:false, type:'', rowData:''}))
+
+  const Actions = (row) =>  {
+    return (
+      <MDBox>
+        <Button
+          startIcon={<EditIcon/>}
+          onClick={(e) => handleOpenEditDialog(e)(row)}
+        />
+        <Button
+          startIcon={<DeleteIcon/>}
+          onClick={(e) =>  handleOpenDeleteDialog(e)(row)}
+
+        />
+      </MDBox>
+    )
+  }
   return (
     <DashboardLayout>
       <DashboardNavbar />
+      <ModalDialog
+        dialog={dialog}
+        handleCloseDialog={handleCloseDialog}
+        setDialog={setDialog}
+      />
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
           <Grid item xs={12}>
@@ -49,14 +81,22 @@ function Service() {
                 bgColor="info"
                 borderRadius="lg"
                 coloredShadow="info"
+                sx={{display:'flex',justifyContent:'space-between'}}
               >
                 <MDTypography variant="h6" color="white">
                   Service
                 </MDTypography>
+                <Button 
+                  variant="contained" 
+                  color="success"
+                  onClick={handleOpenCreateDialog}
+                >
+                  Create
+                </Button>
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows }}
+                  table={{ columns, rows:[...rows].map(row => ( {...row, actions: Actions(row) } )) }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}

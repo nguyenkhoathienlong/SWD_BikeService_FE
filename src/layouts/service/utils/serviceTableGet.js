@@ -20,57 +20,39 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { actions } from "react-table";
-import { Edit } from "@mui/icons-material";
-import MDTypography from "components/MDTypography";
-import ModeIcon from '@mui/icons-material/Mode';
+
+
+
 
 export default function ServiceTable() {
-  const [rows,setRows] = useState([]);
+  const [products, setProducts] = useState([]);
+
   useEffect(()=>{
-    // sua lai api
     axios(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/Product/get-all-product`,{
       method:'GET',
       mode: 'no-cors',
-    }).then(res=>{
-      console.log(res)
-      return res.json()
-    }
-     )
-    .then(data=>setRows( (prev) => [...prev,data]  ))
+    })
+    .then( ({data}) => setProducts(data))
     .catch(err=>console.log(err))
   
   },[])
 
+
+
+
   return {
     columns: [
-      { Header: "Name service", accessor: "name", width: "45%", align: "left" },
+      { 
+        Header: "Name service", 
+        accessor: "name",  
+        align: "left"
+      },
       { Header: "Price", accessor: "price", align: "left" },
-      { Header: "Status", accessor: "status", align: "center" },
-      { Header: "Action", accessor: "action", align: "center" },
-    ],
+      { Header: "Quantity", accessor: "quantity", align: "center" },
+      { Header: "Manufacturer", accessor: "Manufacturer", align: "center" },
+      { Header: "Actions", accessor: "actions", align: "center" },
+    ], 
 
-    rows:[
-      ...rows,
-      {actions : "Edit"},
-      // {
-      //   name: "Nghi",
-      //   price: "10",
-      //   status: true,
-      //   action: (
-      //     <>
-      //     <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-      //       <ModeIcon/>
-      //     </MDTypography>
-      //     <MDTypography component="a" href="#" variant="caption" color="text" fontWeight="medium">
-      //     Delete
-      //   </MDTypography>
-      // </>
-      //   ),
-      // },
-      
-
-    ]
-    
-
+    rows: [...products]
   };
 }
