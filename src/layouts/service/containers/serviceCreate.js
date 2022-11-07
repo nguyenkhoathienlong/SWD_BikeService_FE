@@ -48,6 +48,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           variant="standard"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.name}
           required
         />
         <TextField
@@ -57,6 +58,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.price}
           required
         />
         <TextField
@@ -66,6 +68,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.quantity}
           required
         />
         <TextField
@@ -75,6 +78,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.manufacturerId}
           required
         />
         <TextField
@@ -84,6 +88,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.categoryId}
           required
         />
         <TextField
@@ -92,6 +97,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
           variant="standard"
           onChange={(e) => handleChange(e)}
           fullWidth
+          value={rowData.storeId}
           required
         />
         <Button onClick={handleCreate}>Create new rowData</Button>

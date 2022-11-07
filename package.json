@@ -33,6 +33,7 @@
     "chroma-js": "2.4.2",
     "env-cmd": "^10.1.0",
     "firebase": "^9.11.0",
+    "lodash": "^4.17.21",
     "prop-types": "15.8.1",
     "react": "17.0.2",
     "react-chartjs-2": "3.0.4",
