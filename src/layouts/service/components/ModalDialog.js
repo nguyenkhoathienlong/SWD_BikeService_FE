@@ -21,7 +21,6 @@ const ModalDialog = (
 
     const handleChange = (e) =>
         setDialog((prev) => {
-            console.log(prev)
             return {
                 ...prev,
                 rowData: {

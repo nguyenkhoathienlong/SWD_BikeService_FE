@@ -25,7 +25,7 @@ const ServiceCreate = ({rowData,handleChange}) => {
       }
     });
   }
-  console.log('Nghi1',rowData)
+
   return (
     <div style={{width:'500px'}}>
       <DialogTitle>Create rowData</DialogTitle>

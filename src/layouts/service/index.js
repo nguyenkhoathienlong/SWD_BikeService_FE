@@ -39,7 +39,7 @@ function Service() {
   const [dialog , setDialog] = useState({open:false,type:'', rowData:''})
   const { columns, rows } = serviceTable();
 
-  const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create'}))
+  const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create',rowData:{name:'',price:0,quantity:0,manufacturerId:0,categoryId:0,storeId:''}}))
   const handleOpenEditDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true, type:'edit', rowData:row}))
   const handleOpenDeleteDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true,type:'delete', rowData:row}))
 
