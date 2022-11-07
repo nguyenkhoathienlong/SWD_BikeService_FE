@@ -40,7 +40,6 @@ function Service() {
   const [dialog , setDialog] = useState({open:false,type:'', rowData:''})
   const { columns, rows } = serviceTable();
 
-  console.log('Nghi',rows)
   // Function for Dialog:
   const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create',rowData:baseData}))
   const handleOpenEditDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true, type:'edit', rowData:row}))
