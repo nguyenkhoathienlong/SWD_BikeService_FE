@@ -29,21 +29,30 @@ import DataTable from "examples/Tables/DataTable";
 import { Button } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-
+import _ from "lodash";
 // Utils and Service Component
-import serviceTable from "layouts/service/utils/serviceTableGet";
+import serviceTable from "layouts/service/containers/serviceTableGet";
 import ModalDialog from "./components/ModalDialog";
 
 
 function Service() {
+  let baseData = {name:'',price:0,quantity:0,manufacturerId:0,categoryId:0,storeId:''}
   const [dialog , setDialog] = useState({open:false,type:'', rowData:''})
   const { columns, rows } = serviceTable();
 
-  const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create',rowData:{name:'',price:0,quantity:0,manufacturerId:0,categoryId:0,storeId:''}}))
+  console.log('Nghi',rows)
+  // Function for Dialog:
+  const handleOpenCreateDialog = () => setDialog((prev)=>({...prev,open:true, type:'create',rowData:baseData}))
   const handleOpenEditDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true, type:'edit', rowData:row}))
   const handleOpenDeleteDialog = (e) => (row) => setDialog((prev)=>({...prev,open:true,type:'delete', rowData:row}))
-
   const handleCloseDialog = () => setDialog( (prev) => ({...prev, open:false, type:'', rowData:''}))
+
+  // const validateSubmit = () =>
+  // {
+  //   const { rowData } = dialog;
+  //   return ( _.isEmpty(rowData.name) || _.isEmpty(rowData.manufacturer) || _.isEmpty(rowData.category)  ) 
+
+  // }
 
   const Actions = (row) =>  {
     return (
@@ -60,6 +69,8 @@ function Service() {
       </MDBox>
     )
   }
+
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -67,6 +78,7 @@ function Service() {
         dialog={dialog}
         handleCloseDialog={handleCloseDialog}
         setDialog={setDialog}
+        //confirmDisable={dialog.type === 'delete' ? false : validateSubmit }
       />
       <MDBox pt={6} pb={3}>
         <Grid container spacing={6}>
@@ -96,7 +108,7 @@ function Service() {
               </MDBox>
               <MDBox pt={3}>
                 <DataTable
-                  table={{ columns, rows:[...rows].map(row => ( {...row, actions: Actions(row) } )) }}
+                  table={{ columns, rows: _.map( [...rows] || [] , row => ({...row, actions:Actions(row) }))  }}
                   isSorted={false}
                   entriesPerPage={false}
                   showTotalEntries={false}

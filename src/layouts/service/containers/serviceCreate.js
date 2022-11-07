@@ -4,38 +4,60 @@ import {
   Button,
   DialogTitle,
   DialogContentText,
-  Typography,
+  Autocomplete,
+  RadioGroup,
+  Radio,
+  FormControlLabel
 } from "@mui/material";
-import { useState } from "react";
+
+import { useEffect, useState  } from "react";
+import ErrorHandler from "../components/ErrorHandler";
+
+import Api from "api/api";
 
 const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
-  
-  const [err, setErr] = useState(false);
 
-  function handleCreate() {
-    fetch(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/Product`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(rowData),
-    }).then((res) => {
-      if (res !== 200) {
-        setErr(true);
-      } else {
-        handleCloseDialog()
-        //window.location.reload();
-      }
-    })
-  }
+  const [ categories, setCategories] = useState([])
+  const [ manufacturers, setManufacturers ] = useState([])
+  const [ stores, setStores ] = useState([])
+  const {error, isError, errMessage } = ErrorHandler();
+
+  useEffect(()=>{
+
+    async function getCategories()
+    {
+      const data = await Api.getAllCategories()
+      if(data) setCategories(data)
+      
+    }
+    async function getManufacturers()
+    {
+      const data = await Api.getAllManufacturers()
+      if(data) setManufacturers(data)
+    }
+    async function getStores()
+    {
+      const data = await Api.getAllStores()
+      if(data) setStores(data)
+    }
+
+    getCategories()
+    getManufacturers()
+    getStores()
+
+  },[])
+
+
+
 
   return (
-    <div style={{width:'500px'}}>
+    <div style={{width:'600px'}}>
       <DialogTitle>Create rowData</DialogTitle>
 
-      {err ? (
-        <Typography sx={{ color: "red", fontWeight: "bold" , textAlign:'center'}}>
-          Fail to create new rowData
-        </Typography>
-      ) : (
+      {
+      error
+      ? (errMessage) 
+      : (
         <DialogContentText>
           "To create rowData, please enter fully all of this content here. We will send updates
           occasionally."
@@ -45,7 +67,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
         <TextField
           name="name"
           label="Name"
-          variant="standard"
+          variant="outlined"
           onChange={(e) => handleChange(e)}
           fullWidth
           value={rowData.name}
@@ -54,7 +76,7 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
         <TextField
           name="price"
           label="Price"
-          variant="standard"
+          variant="outlined"
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
@@ -64,43 +86,84 @@ const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
         <TextField
           name="quantity"
           label="Quantity"
-          variant="standard"
+          variant="outlined"
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
           value={rowData.quantity}
           required
         />
-        <TextField
-          name="manufacturerId"
-          label="Manufacturer Id"
-          variant="standard"
-          type="number"
-          onChange={(e) => handleChange(e)}
-          fullWidth
-          value={rowData.manufacturerId}
-          required
+        <Autocomplete
+          autoComplete
+          autoSelect
+          filterSelectedOptions
+          options={manufacturers || []}
+          onChange={(e,value) => handleChange(e,value,'manufacturerId')}
+          disableClearable={true}
+          getOptionLabel={(option)=>{
+            return option.name
+          }}
+          renderInput={(params) => (
+            <TextField {...params}
+              label="Manufacturers"
+              name="manufacturers"
+              variant="outlined"
+            />
+          )}
         />
-        <TextField
-          name="categoryId"
-          label="Category Id"
-          variant="standard"
-          type="number"
-          onChange={(e) => handleChange(e)}
-          fullWidth
-          value={rowData.categoryId}
-          required
+         <Autocomplete
+          autoComplete
+          autoSelect
+          filterSelectedOptions
+          options={categories || []}
+          onChange={(e,value) => handleChange(e,value,'categoryId')}
+          disableClearable={true}
+          getOptionLabel={(option)=>{
+            return option.name
+          }}
+          renderInput={(params) => (
+            <TextField {...params}
+              label="Categories"
+              name="categories"
+              variant="outlined"
+            />
+          )}
         />
-        <TextField
-          name="storeId"
-          label="Store Id"
-          variant="standard"
-          onChange={(e) => handleChange(e)}
-          fullWidth
-          value={rowData.storeId}
-          required
+         <Autocomplete
+          autoComplete
+          autoSelect
+          filterSelectedOptions
+          options={stores || []}
+          onChange={(e,value) => handleChange(e,value,"storeId")}
+          disableClearable={true}
+          getOptionLabel={(option)=>{
+            return option.name
+          }}
+          renderInput={(params) => (
+            <TextField {...params}
+              label="Stores"
+              name="store"
+              variant="outlined"
+            />
+          )}
         />
-        <Button onClick={handleCreate}>Create new rowData</Button>
+         <RadioGroup
+            defaultValue="service"
+            name="radio-buttons-group"
+            sx={{
+              textAlign:'left'
+            }}
+          >
+            <FormControlLabel 
+              value="service" 
+              control={<Radio />} 
+              label="Type Service" />
+            <FormControlLabel 
+              value="product" 
+              control={<Radio />} l
+              label="Type Product" />
+
+          </RadioGroup>
       </FormControl>
     </div>
   );

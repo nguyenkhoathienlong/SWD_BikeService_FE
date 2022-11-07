@@ -18,26 +18,27 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React components
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
-import { actions } from "react-table";
-
+import Api from "api/api";
+import ErrorHandler from "../components/ErrorHandler";
 
 
 
 export default function ServiceTable() {
+
   const [products, setProducts] = useState([]);
 
-  useEffect(()=>{
-    axios(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/Product/get-all-product`,{
-      method:'GET',
-      mode: 'no-cors',
-    })
-    .then( ({data}) => setProducts(data))
-    .catch(err=>console.log(err))
-  
+  useEffect( ()=>{
+    async function getProducts()
+    {
+      const data = await Api.getAllProducts()
+      if(data)
+      {
+        setProducts(data)
+      }
+    }
+    getProducts()
+
   },[])
-
-
 
 
   return {

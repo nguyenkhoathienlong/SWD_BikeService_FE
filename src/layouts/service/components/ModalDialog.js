@@ -1,6 +1,8 @@
-import { Dialog, DialogTitle, DialogContentText } from "@mui/material";
+import { Dialog, Button} from "@mui/material";
+import { Typography } from "antd";
+import MDBox from "components/MDBox";
 
-import { useState } from "react";
+import _ from "lodash";
 
 import ServiceCreate from "../containers/serviceCreate";
 import ServiceDelete from "../containers/serviceDelete";
@@ -14,17 +16,21 @@ const ModalDialog = (
             rowData
         },
         handleCloseDialog,
-        setDialog
+        setDialog,
+        confirmDisable
     }) => {
     
+    function handleCreate() {
+        
+    }
 
-
-    const handleChange = (e) =>
+    const handleChange = (e,value,name) =>
         setDialog((prev) => {
             return {
                 ...prev,
                 rowData: {
                         ...prev.rowData,
+                        [name]: _.includes(['manufacturerId','categoryId','storeId'],name) ? +value.id : value.id,
                         [e.target.name]: e.target.type === "number" ? +e.target.value : e.target.value,
                     }  
             }
@@ -46,14 +52,37 @@ const ModalDialog = (
              )
         }
     }
-  
+
     return (
         <Dialog 
             open={open} 
-            onClose={handleCloseDialog }
-            
+            sx={{
+                textAlign:'center',
+            }}
             >
                 {dialogType()}
+                <MDBox
+                    mt={3}
+                    sx={{display:'flex',justifyContent:'left'}}
+                >
+                    <Button 
+                        onClick={handleCreate}
+                        variant="contained"
+                    >
+                        <Typography>
+                            Add
+                        </Typography>
+                    </Button>
+                    <Button 
+                        onClick={handleCloseDialog}
+                        variant="contained"
+                    >
+                        <Typography>
+                            Delete
+                        </Typography>
+                    </Button>
+                </MDBox>
+            
         </Dialog>
       );
 }

@@ -46,6 +46,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
 const routes = [
   {
@@ -60,7 +61,7 @@ const routes = [
     type: "collapse",
     name: "Services",
     key: "services",
-    icon: <Icon fontSize="small">services</Icon>,
+    icon: <AirportShuttleIcon/>,
     route: "/services",
     component: <Service />,
   },
