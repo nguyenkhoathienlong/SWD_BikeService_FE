@@ -6,15 +6,15 @@ import {
   DialogContentText,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const ServiceEdit = ({ rowData, handleChange }) => {
-
-
+const ServiceCreate = ({rowData,handleChange}) => {
+  
   const [err, setErr] = useState(false);
-  function handleEdit() {
-    fetch(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/Product/${rowData.id}`, {
-      method: "PUT",
+
+  function handleCreate() {
+    fetch(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/rowData`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rowData),
     }).then((res) => {
@@ -25,15 +25,20 @@ const ServiceEdit = ({ rowData, handleChange }) => {
       }
     });
   }
-
-
+  console.log('add',rowData)
   return (
-    <div style={{ width: "500px" }}>
-      <DialogContentText>Edit this rowData.....</DialogContentText>
-      {err && (
-        <Typography sx={{ color: "red", fontWeight: "bold", textAlign: "center" }}>
-          Something went wrong
+    <div style={{width:'500px'}}>
+      <DialogTitle>Create new service & product</DialogTitle>
+
+      {err ? (
+        <Typography sx={{ color: "red", fontWeight: "bold" , textAlign:'center'}}>
+          Fail to create new service or product
         </Typography>
+      ) : (
+        <DialogContentText>
+          "To create service or product, please enter fully all of this content here. We will send updates
+          occasionally."
+        </DialogContentText>
       )}
       <FormControl fullWidth>
         <TextField
@@ -42,7 +47,7 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           variant="standard"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.name}
+          required
         />
         <TextField
           name="price"
@@ -51,7 +56,7 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.price}
+          required
         />
         <TextField
           name="quantity"
@@ -60,7 +65,7 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.quantity}
+          required
         />
         <TextField
           name="manufacturerId"
@@ -69,7 +74,7 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.manufacturerId}
+          required
         />
         <TextField
           name="categoryId"
@@ -78,7 +83,7 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           type="number"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.categoryId}
+          required
         />
         <TextField
           name="storeId"
@@ -86,12 +91,28 @@ const ServiceEdit = ({ rowData, handleChange }) => {
           variant="standard"
           onChange={(e) => handleChange(e)}
           fullWidth
-          value={rowData.storeId}
+          required
         />
-        <Button onClick={handleEdit}>Edit</Button>
+        <TextField
+          name="isService"
+          label="Type Service"
+          variant="standard"
+          onChange={(e) => handleChange(e)}
+          fullWidth
+          value={rowData.isService}
+        />
+        <TextField
+          name="isProduct"
+          label="Type Product"
+          variant="standard"
+          onChange={(e) => handleChange(e)}
+          fullWidth
+          value={rowData.isProduct}
+        />
+        <Button onClick={handleCreate}>Create new Service or Product</Button>
       </FormControl>
     </div>
   );
 };
 
-export default ServiceEdit;
+export default ServiceCreate;

@@ -38,18 +38,16 @@ export default function ServiceTable() {
   },[])
 
 
-
-
   return {
     columns: [
       { 
-        Header: "Name service", 
+        Header: "Name product/service", 
         accessor: "name",  
         align: "left"
       },
       { Header: "Price", accessor: "price", align: "left" },
       { Header: "Quantity", accessor: "quantity", align: "center" },
-      { Header: "Manufacturer", accessor: "Manufacturer", align: "center" },
+      { Header: "Manufacturer", accessor: "manufacturerId", align: "center" },
       { Header: "Actions", accessor: "actions", align: "center" },
     ], 
 
