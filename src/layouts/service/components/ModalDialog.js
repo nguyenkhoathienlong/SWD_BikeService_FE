@@ -2,9 +2,9 @@ import { Dialog, DialogTitle, DialogContentText } from "@mui/material";
 
 import { useState } from "react";
 
-import ServiceCreate from "../utils/serviceCreate";
-import ServiceDelete from "../utils/serviceDelete";
-import ServiceEdit from "../utils/serviceEdit";
+import ServiceCreate from "../containers/serviceCreate";
+import ServiceDelete from "../containers/serviceDelete";
+import ServiceEdit from "../containers/serviceEdit";
 
 const ModalDialog = (
     {
