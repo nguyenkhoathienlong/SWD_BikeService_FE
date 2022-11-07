@@ -39,7 +39,7 @@ const ModalDialog = (
          case 'edit':
             return <ServiceEdit rowData={rowData} handleChange={handleChange} handleCloseDialog={handleCloseDialog}/>
          case 'delete':
-            return <ServiceDelete rowData={rowData} handleChange={handleChange} handleCloseDialog={handleCloseDialog}/>
+            return <ServiceDelete rowData={rowData} handleCloseDialog={handleCloseDialog}/>
          default:
             return (
                 <div>Loading...</div>
