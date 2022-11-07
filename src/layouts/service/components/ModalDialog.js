@@ -35,11 +35,11 @@ const ModalDialog = (
         switch(type)
         {
          case 'create':
-            return <ServiceCreate rowData={rowData} handleChange={handleChange}/>
+            return <ServiceCreate rowData={rowData} handleChange={handleChange} handleCloseDialog={handleCloseDialog}/>
          case 'edit':
-            return <ServiceEdit rowData={rowData} handleChange={handleChange}/>
+            return <ServiceEdit rowData={rowData} handleChange={handleChange} handleCloseDialog={handleCloseDialog}/>
          case 'delete':
-            return <ServiceDelete rowData={rowData} handleChange={handleChange}/>
+            return <ServiceDelete rowData={rowData} handleChange={handleChange} handleCloseDialog={handleCloseDialog}/>
          default:
             return (
                 <div>Loading...</div>

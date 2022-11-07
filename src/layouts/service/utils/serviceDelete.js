@@ -1,7 +1,8 @@
 import { FormControl, TextField,Button,DialogTitle, DialogContentText, Typography } from "@mui/material";
 import { useState } from "react";
 
-const ServiceDelete = ({rowData}) => {
+const ServiceDelete = ({rowData,handleCloseDialog}) => {
+
     const [err, setErr] = useState(false);
     const handleDelete = () =>
     {
@@ -12,7 +13,8 @@ const ServiceDelete = ({rowData}) => {
             if (res !== 200) {
               setErr(true);
             } else {
-              window.location.reload();
+              handleCloseDialog()
+              //window.location.reload();
             }
           });
     }

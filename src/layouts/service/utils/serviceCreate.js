@@ -6,14 +6,14 @@ import {
   DialogContentText,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-const ServiceCreate = ({rowData,handleChange}) => {
+const ServiceCreate = ({rowData,handleChange,handleCloseDialog }) => {
   
   const [err, setErr] = useState(false);
 
   function handleCreate() {
-    fetch(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/rowData`, {
+    fetch(`https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/api/Product`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rowData),
@@ -21,9 +21,10 @@ const ServiceCreate = ({rowData,handleChange}) => {
       if (res !== 200) {
         setErr(true);
       } else {
-        window.location.reload();
+        handleCloseDialog()
+        //window.location.reload();
       }
-    });
+    })
   }
 
   return (

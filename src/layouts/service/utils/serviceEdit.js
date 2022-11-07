@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 
-const ServiceEdit = ({ rowData, handleChange }) => {
+const ServiceEdit = ({ rowData, handleChange,handleCloseDialog }) => {
 
 
   const [err, setErr] = useState(false);
@@ -21,7 +21,8 @@ const ServiceEdit = ({ rowData, handleChange }) => {
       if (res !== 200) {
         setErr(true);
       } else {
-        window.location.reload();
+        handleCloseDialog()
+        //window.location.reload();
       }
     });
   }
