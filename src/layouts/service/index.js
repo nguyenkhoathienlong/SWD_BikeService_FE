@@ -125,7 +125,7 @@ function Service() {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name) ? +value.id: value.id,
+          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name) ? +value?.id: value?.id,
           [e.target.name]: e.target.type === "number" ? +e.target.value : e.target.value,
         },
       };
@@ -144,7 +144,7 @@ function Service() {
   };
 
 
-
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
