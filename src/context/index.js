@@ -78,7 +78,11 @@ function reducer(state, action) {
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
     isLoading:false,
-    isError:false,
+    isError: { 
+      error: false,
+      code:0,
+      message: ''
+    },
     miniSidenav: false,
     transparentSidenav: false,
     whiteSidenav: false,
