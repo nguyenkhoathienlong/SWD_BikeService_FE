@@ -16,7 +16,7 @@ import ErrorHandler from "../components/ErrorHandler";
 import Api from "api/api";
 import _ from "lodash";
 
-const ServiceCreate = ({ rowData, handleChange, handleCloseDialog }) => {
+const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
 
   const [services, setServices] = useState([]);
 
@@ -153,4 +153,4 @@ const ServiceCreate = ({ rowData, handleChange, handleCloseDialog }) => {
   );
 };
 
-export default ServiceCreate;
+export default ServiceCreateEdit;

@@ -62,6 +62,9 @@ function reducer(state, action) {
     case "DARKMODE": {
       return { ...state, darkMode: action.value };
     }
+    case "LOADING": {
+      return { ...state, isLoading: action.value };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -71,6 +74,7 @@ function reducer(state, action) {
 // Material Dashboard 2 React context provider
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
+    isLoading:false,
     miniSidenav: false,
     transparentSidenav: false,
     whiteSidenav: false,
@@ -119,6 +123,7 @@ const setOpenConfigurator = (dispatch, value) => dispatch({ type: "OPEN_CONFIGUR
 const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value });
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
+const setLoading = (dispatch, value) => dispatch({type:"LOADING", value})
 
 export {
   MaterialUIControllerProvider,
@@ -133,4 +138,5 @@ export {
   setDirection,
   setLayout,
   setDarkMode,
+  setLoading
 };
