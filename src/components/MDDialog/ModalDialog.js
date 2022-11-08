@@ -2,16 +2,16 @@ import { Dialog, Button} from "@mui/material";
 import { Typography } from "antd";
 import MDBox from "components/MDBox";
 
-import _ from "lodash";
 
 const MDModalDialog = (
     {
+        // Props:
         open,
         handleCloseDialog,
         confirmDisable,
-        handleSumit
-    },
-    children
+        handleSumit,
+        children
+    }
     ) => {
    
     return (
@@ -32,7 +32,7 @@ const MDModalDialog = (
                         disabled={confirmDisable}
                     >
                         <Typography>
-                            Add
+                            Submit
                         </Typography>
                     </Button>
                     <Button 
@@ -40,7 +40,7 @@ const MDModalDialog = (
                         variant="contained"
                     >
                         <Typography>
-                            Delete
+                            Cancel
                         </Typography>
                     </Button>
                 </MDBox>

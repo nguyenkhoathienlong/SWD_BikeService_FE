@@ -55,7 +55,13 @@ function Service() {
     storeId: "",
   };
   const [dialog, setDialog] = useState({ open: false, type: "", rowData: "" });
-  const { columns, rows } = serviceTable();
+  const { 
+    columns, 
+    rows,
+    categories,
+    manufacturers,
+    stores
+  } = serviceTable();
 
   /*
   =========================================================
@@ -94,13 +100,23 @@ function Service() {
   const validateSubmit = () =>
   {
     const { rowData } = dialog;
-    return ( _.isEmpty(rowData.name) || _.isEmpty(rowData.manufacturer) || _.isEmpty(rowData.category)  )
+    return ( 
+      _.isEmpty(rowData.name) || 
+        isNaN(rowData.price) ||
+        isNaN(rowData.quantity) ||
+        isNaN(rowData.manufacturerId) ||
+        isNaN(rowData.categoryId) || 
+        isNaN(rowData.storeId) ||
+      _.isEmpty(rowData.category) 
+      )
 
   }
 
   /*
   =========================================================
   *  Handle changing Input and Submit Function:
+        + Event for TextField
+        + Value and Name for AutoComplete
   =========================================================
   */
   const handleChange = (e, value, name) => 
@@ -134,15 +150,18 @@ function Service() {
       <DashboardNavbar />
       <MDModalDialog
         open={dialog.open}
-        confirmDisable={dialog.type === 'delete' ? false : validateSubmit }
+        confirmDisable={dialog.type === 'delete' ? false : validateSubmit() }
         handleSubmit={handleSubmit}
         handleCloseDialog={handleCloseDialog}
       >
         {
         ((dialog.type === "add" || dialog.type === "edit") && (
           <ServiceCreateEdit 
-            handleChange={handleChange} 
             rowData={dialog.rowData}
+            handleChange={handleChange}    
+            categories={categories}
+            manufacturers={manufacturers}
+            stores={stores}
           />
         ))
         }

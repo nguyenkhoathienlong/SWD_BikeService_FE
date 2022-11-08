@@ -1,7 +1,6 @@
 import {
   FormControl,
   TextField,
-  Button,
   DialogTitle,
   DialogContentText,
   Autocomplete,
@@ -10,59 +9,26 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-import { useEffect, useState } from "react";
-import ErrorHandler from "../components/ErrorHandler";
-
-import Api from "api/api";
 import _ from "lodash";
 
-const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
+const ServiceCreateEdit = ({ 
+    rowData, 
+    handleChange,
+    categories,
+    manufacturers,
+    stores 
+  }) => {
 
-  const [services, setServices] = useState([]);
-
-  const { error, isError, errMessage } = ErrorHandler();
-
-  async function getData() {
-    const data = await Promise.all([
-      {
-        categories: await Api.getAllCategories(),
-      },
-      {
-        manufacturers: await Api.getAllManufacturers(),
-      },
-      {
-        stores: await Api.getAllStores(),
-      },
-    ]);
-    return data;
-  }
-
-  useEffect(() => {
-    async function callAPI()
-    {
-      const response = await getData()
-      if(response)
-      {
-        setServices(response)
-      }
-     
-    }
-    callAPI()
-  }, []);
-
-
+  
   return (
-    <div style={{ width: "600px" }}>
+    <div>
       <DialogTitle>Create rowData</DialogTitle>
 
-      {error ? (
-        errMessage
-      ) : (
-        <DialogContentText>
-          "To create rowData, please enter fully all of this content here. We will send updates
-          occasionally."
-        </DialogContentText>
-      )}
+      <DialogContentText>
+        "To create rowData, please enter fully all of this content here. We will send updates
+        occasionally."
+      </DialogContentText>
+
       <FormControl fullWidth>
         <TextField
           name="name"
@@ -98,7 +64,7 @@ const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
           loading
           autoSelect
           filterSelectedOptions
-          options={ _.find(services || [] , ({manufacturers}) => manufacturers )?.manufacturers || []}
+          options={manufacturers}
           onChange={(e, value) => handleChange(e, value, "manufacturerId")}
           disableClearable={true}
           getOptionLabel={(option) => {
@@ -113,7 +79,7 @@ const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
           autoSelect
           loading
           filterSelectedOptions
-          options={_.find(services || [], ({categories}) => categories )?.categories || []}
+          options={categories}
           onChange={(e, value) => handleChange(e, value, "categoryId")}
           disableClearable={true}
           getOptionLabel={(option) => {
@@ -128,7 +94,7 @@ const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
           autoSelect
           loading
           filterSelectedOptions
-          options={_.find(services || [], ({stores}) => stores )?.stores || []}
+          options={stores}
           onChange={(e, value) => handleChange(e, value, "storeId")}
           disableClearable={true}
           getOptionLabel={(option) => {
@@ -146,7 +112,7 @@ const ServiceCreateEdit = ({ rowData, handleChange, handleCloseDialog }) => {
           }}
         >
           <FormControlLabel value="service" control={<Radio />} label="Type Service" />
-          <FormControlLabel value="product" control={<Radio />} l label="Type Product" />
+          <FormControlLabel value="product" control={<Radio />} label="Type Product" />
         </RadioGroup>
       </FormControl>
     </div>
