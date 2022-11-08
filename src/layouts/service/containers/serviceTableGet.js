@@ -19,7 +19,7 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 import { useEffect } from "react";
 import Api from "api/api";
-import { setLoading, setError ,useMaterialUIController } from "context";
+import { setLoading, setError, useMaterialUIController } from "context";
 import _ from "lodash";
 
 export default function ServiceTable() {
@@ -49,15 +49,24 @@ export default function ServiceTable() {
           manufacturers: await Api.getAllManufacturers(),
         },
         {
-          stores: await Api.getAllStores(),
+          stores:  await Api.getAllStores(),
         },
       ]);
-      if (data) {
+      let check = _.every(data,(item) =>
+                                  _.isArray(item.products) ||
+                                  _.isArray(item.categories) ||
+                                  _.isArray(item.manufacturers) ||
+                                  _.isArray(item.stores)
+                          );
+      if (check) {
         setProducts(data);
+        setLoading(dispatch, false);
+      } else {
+        setError(dispatch, { error: true, message: "Wrong Type Of Data" });
         setLoading(dispatch, false);
       }
     } catch (err) {
-      setError(dispatch, {...err, error:true })
+      setError(dispatch, { ...err, error: true });
       setLoading(dispatch, false);
     }
   }

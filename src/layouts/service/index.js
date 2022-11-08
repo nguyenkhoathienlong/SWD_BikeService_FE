@@ -138,9 +138,9 @@ function Service() {
       rowData 
     } = dialog;
 
-    (type === 'add' && await Api.createProducts(rowData)) || 
-    (type === 'edit' && await Api.createProducts(rowData)) ||
-    (type === 'delete' && await Api.createProducts(rowData))
+    (type === 'add' && await Api.CreateProducts(rowData)) || 
+    (type === 'edit' && await Api.EditProduct(rowData)) ||
+    (type === 'delete' && await Api.DeleteProduct(rowData))
   };
 
 
