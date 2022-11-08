@@ -4,9 +4,6 @@ import MDBox from "components/MDBox";
 
 import _ from "lodash";
 
-
-
-
 const MDModalDialog = (
     {
         open,

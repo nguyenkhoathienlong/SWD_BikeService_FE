@@ -37,9 +37,15 @@ import serviceTable from "layouts/service/containers/serviceTableGet";
 
 import ServiceCreateEdit from "./containers/serviceCreateEdit";
 import ServiceDelete from "./containers/serviceDelete";
+import Api from "api/api";
 
 function Service() {
-  // Define cons, state and custom hooks
+
+  /**
+  =========================================================
+  * Define Variable and State
+  =========================================================
+  */
   const baseData = {
     name: "",
     price: 0,
@@ -51,8 +57,11 @@ function Service() {
   const [dialog, setDialog] = useState({ open: false, type: "", rowData: "" });
   const { columns, rows } = serviceTable();
 
-  
-  // Define Init Component
+  /*
+  =========================================================
+  * Define Init UI
+  =========================================================
+  */
   const Actions = (row) => {
     return (
       <MDBox>
@@ -62,7 +71,11 @@ function Service() {
     );
   };
 
-  // Function for Dialog:
+  /*
+  =========================================================
+  *  Function for Dialog:
+  =========================================================
+  */
   const handleOpenCreateDialog = () =>
     setDialog((prev) => ({ ...prev, open: true, type: "add", rowData: baseData }));
   const handleOpenEditDialog = (e) => (row) =>
@@ -73,6 +86,11 @@ function Service() {
     setDialog((prev) => ({ ...prev, open: false, type: "", rowData: "" }));
 
   
+  /*
+  =========================================================
+  *  Validate Input Field after submit
+  =========================================================
+  */
   const validateSubmit = () =>
   {
     const { rowData } = dialog;
@@ -80,25 +98,33 @@ function Service() {
 
   }
 
-  // Handle Input and Submit Function:
+  /*
+  =========================================================
+  *  Handle changing Input and Submit Function:
+  =========================================================
+  */
   const handleChange = (e, value, name) => 
     setDialog((prev) => {
       return {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name)
-            ? +value.id
-            : value.id,
+          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name) ? +value.id: value.id,
           [e.target.name]: e.target.type === "number" ? +e.target.value : e.target.value,
         },
       };
     });
-  
 
-  const handleSubmit = () => 
+  const handleSubmit = async () => 
   {
+    const { 
+      type, 
+      rowData 
+    } = dialog;
 
+    (type === 'add' && await Api.createProducts(rowData)) || 
+    (type === 'edit' && await Api.createProducts(rowData)) ||
+    (type === 'delete' && await Api.createProducts(rowData))
   };
 
 
@@ -108,12 +134,25 @@ function Service() {
       <DashboardNavbar />
       <MDModalDialog
         open={dialog.open}
-        handleCloseDialog={handleCloseDialog}
         confirmDisable={dialog.type === 'delete' ? false : validateSubmit }
         handleSubmit={handleSubmit}
+        handleCloseDialog={handleCloseDialog}
       >
-        {((dialog.type === "add" || dialog.type === "edit") && <ServiceCreateEdit handleChange={handleChange} rowData={dialog.rowData}/>) ||
-          (dialog.type === "delete" && <ServiceDelete rowData={dialog.rowData}/>)}
+        {
+        ((dialog.type === "add" || dialog.type === "edit") && (
+          <ServiceCreateEdit 
+            handleChange={handleChange} 
+            rowData={dialog.rowData}
+          />
+        ))
+        }
+        {
+          (dialog.type === "delete" && (
+            <ServiceDelete 
+              rowData={dialog.rowData}
+            />
+          ))
+        }
       </MDModalDialog>
 
       <MDBox pt={6} pb={3}>
