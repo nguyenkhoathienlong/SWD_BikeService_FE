@@ -32,6 +32,12 @@ MaterialUI.displayName = "MaterialUIContext";
 // Material Dashboard 2 React reducer
 function reducer(state, action) {
   switch (action.type) {
+    case "LOADING": {
+      return { ...state, isLoading: action.value };
+    }
+    case "ERROR": {
+      return { ...state, isError: action.value };
+    }
     case "MINI_SIDENAV": {
       return { ...state, miniSidenav: action.value };
     }
@@ -71,6 +77,8 @@ function reducer(state, action) {
 // Material Dashboard 2 React context provider
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
+    isLoading:false,
+    isError:false,
     miniSidenav: false,
     transparentSidenav: false,
     whiteSidenav: false,
@@ -109,6 +117,8 @@ MaterialUIControllerProvider.propTypes = {
 };
 
 // Context module functions
+const setLoading = (dispatch, value) => dispatch({type:"LOADING", value})
+const setError = (dispatch, value) => dispatch({type:"ERROR", value})
 const setMiniSidenav = (dispatch, value) => dispatch({ type: "MINI_SIDENAV", value });
 const setTransparentSidenav = (dispatch, value) => dispatch({ type: "TRANSPARENT_SIDENAV", value });
 const setWhiteSidenav = (dispatch, value) => dispatch({ type: "WHITE_SIDENAV", value });
@@ -120,7 +130,10 @@ const setDirection = (dispatch, value) => dispatch({ type: "DIRECTION", value })
 const setLayout = (dispatch, value) => dispatch({ type: "LAYOUT", value });
 const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 
+
 export {
+  setLoading,
+  setError,
   MaterialUIControllerProvider,
   useMaterialUIController,
   setMiniSidenav,
@@ -132,5 +145,6 @@ export {
   setOpenConfigurator,
   setDirection,
   setLayout,
-  setDarkMode,
+  setDarkMode
+
 };

@@ -46,6 +46,7 @@ import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 
 const routes = [
   {
@@ -61,7 +62,7 @@ const routes = [
     name: "Service & Product",
     key: "services",
     icon: <Icon fontSize="small">services</Icon>,
-    route: "/service&product",
+    route: "/services",
     component: <Service />,
   },
   // {
