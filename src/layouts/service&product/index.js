@@ -33,7 +33,8 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import serviceTable from "layouts/service/containers/serviceTableGet";
+import serviceTable from "layouts/service/utils/serviceTableGet";
+import ModalDialog from "./components/ModalDialog";
 
 import ServiceCreateEdit from "./containers/serviceCreateEdit";
 import ServiceDelete from "./containers/serviceDelete";
@@ -190,7 +191,7 @@ function Service() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Service
+                  Service & Product
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create

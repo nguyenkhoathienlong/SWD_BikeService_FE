@@ -37,7 +37,7 @@ Coded by www.creative-tim.com
 
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
-import Service from "layouts/service";
+import Service from "layouts/service&product";
 // import Billing from "layouts/billing";
 // import Notifications from "layouts/notifications";
 // import Profile from "layouts/profile";
@@ -59,9 +59,9 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Services",
+    name: "Service & Product",
     key: "services",
-    icon: <AirportShuttleIcon/>,
+    icon: <Icon fontSize="small">services</Icon>,
     route: "/services",
     component: <Service />,
   },
@@ -89,22 +89,22 @@ const routes = [
   //   route: "/profile",
   //   component: <Profile />,
   // },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/authentication/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/authentication/sign-up",
-    component: <SignUp />,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "Sign In",
+  //   key: "sign-in",
+  //   icon: <Icon fontSize="small">login</Icon>,
+  //   route: "/authentication/sign-in",
+  //   component: <SignIn />,
+  // },
+  // {
+  //   type: "collapse",
+  //   name: "Sign Up",
+  //   key: "sign-up",
+  //   icon: <Icon fontSize="small">assignment</Icon>,
+  //   route: "/authentication/sign-up",
+  //   component: <SignUp />,
+  // },
 ];
 
 export default routes;
