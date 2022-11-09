@@ -134,29 +134,20 @@ function Service() {
         rowData: {
           ...prev.rowData,
           [key]: (
-                    _.includes(['manufacturerId',
-                                'categoryId',
-                                'storeId'
-                                ],key) 
-                    && +value?.id 
-                ) 
-                ||
+                    _.some(Object.keys(baseData),data => key.includes("Id") ) 
+                    && +value.id
+                ) ||
                 (
-                    _.includes(['price',
-                                'quantity'
-                            ],key) 
+                    _.some(Object.keys(baseData), data => _.includes(['price','quantity'],key) )
                     ? +value
                     : value
                 )
-                    
-
+       
         },
       };
     }
     );
   }
-   
-
   const handleSubmit = async () => 
   {
     const { 
