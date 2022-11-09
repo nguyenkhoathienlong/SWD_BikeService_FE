@@ -58,14 +58,6 @@ import Api from "api/api";
       </MDBox>
     );
   };
-
-function Service() {
-
-  /**
-  =========================================================
-  * Define Variable and State
-  =========================================================
-  */
   const baseData = {
     name: "",
     price: 0,
@@ -74,6 +66,15 @@ function Service() {
     categoryId: 0,
     storeId: "",
   };
+
+function Service() {
+
+  /**
+  =========================================================
+  * Define Variable and State
+  =========================================================
+  */
+
   const [dialog, setDialog] = useState({ open: false, type: "", rowData: "" });
   const { 
     columns, 
@@ -161,7 +162,7 @@ function Service() {
   };
 
 
-  console.log('Nghi',dialog.rowData)
+
   return (
     <DashboardLayout>
       <DashboardNavbar />

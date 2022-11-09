@@ -5,59 +5,86 @@ import { useEffect } from "react";
 import Api from "api/api";
 import _ from "lodash";
 import EventFeature from "hooks";
+
+
+
+function Services() {
+
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [manufacturers, setManufacturers] = useState([]);
+  const [stores, setStores] = useState([]);
+  
+ 
+  function serviceCreate(products,categories,manufacturers,stores) {
+    setProducts(products) 
+    setCategories(categories) 
+    setManufacturers(manufacturers)
+    setStores(stores) 
+  }
+ 
+  return {
+    products,
+    categories,
+    manufacturers,
+    stores,
+    serviceCreate
+  }
+}
+
 export default function ServiceTable() {
   /**
   =========================================================
   * Define Variable and State
   =========================================================
   */
-  const [services, setServices] = useState([]);
+
   const { doLoading, doError } = EventFeature() 
- 
+  const {
+    products,
+    categories,
+    manufacturers,
+    stores,
+    serviceCreate
+  } = Services()
   /**
   =========================================================
   * API CALL for INIT SERVICE:
   =========================================================
   */
-  async function getData() {
-    try {
-      const data = await Promise.all([
-        {
-          products: await Api.getAllProducts(),
-        },
-        {
-          categories: await Api.getAllCategories(),
-        },
-        {
-          manufacturers: await Api.getAllManufacturers(),
-        },
-        {
-          stores:  await Api.getAllStores(),
-        },
-      ]);
-      let check = _.every(data,(item) =>
-                                  _.isArray(item.products) ||
-                                  _.isArray(item.categories) ||
-                                  _.isArray(item.manufacturers) ||
-                                  _.isArray(item.stores)
-                          );
-      if (check) {
-        doLoading(false)
-        setServices(data);
-        
-      } else {
-        doError({error:true,message:'Wrong Type Of Data'})
+  useEffect(() => {
+    ( async () => {
+      try {
+        doLoading(true)
+        const [
+          products,
+          categories,
+          manufacturers,
+          stores
+        ] = await Promise.all([
+            Api.getAllProducts(),
+            Api.getAllCategories(),
+            Api.getAllManufacturers(),
+            Api.getAllStores(),
+          ]);
+        if (
+          _.isArray(products) ||
+          _.isArray(categories) ||
+          _.isArray(manufacturers) ||
+          _.isArray(stores)
+        ) {
+          doLoading(false)
+          serviceCreate(products,categories,manufacturers,stores)
+          
+        } else {
+          doError({error:true,message:'Wrong Type Of Data'})
+          doLoading(false)
+        }
+      } catch (err) {
+        doError({ ...err, error: true })
         doLoading(false)
       }
-    } catch (err) {
-      doError({ ...err, error: true })
-      doLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    doLoading(true)
-    getData();
+    })()
 
     /**
      * This API call above is a ASYNCHRONOUS FUNCTION
@@ -66,11 +93,12 @@ export default function ServiceTable() {
      * We need to have a clean up function
      * We don't have function to stop calling API, so we set the SERVICE STATE again for easy purpose
      */
-    return () => setServices([]);
+    return () => []
     //https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+ 
   return {
     columns: [
       {
@@ -83,9 +111,9 @@ export default function ServiceTable() {
       { Header: "Manufacturer", accessor: "Manufacturer", align: "center" },
       { Header: "Actions", accessor: "actions", align: "center" },
     ],
-    rows: _.find([...services], ({ products }) => products)?.products || [],
-    categories: _.find([...services], ({ categories }) => categories)?.categories || [],
-    manufacturers: _.find([...services], ({ manufacturers }) => manufacturers)?.manufacturers || [],
-    stores: _.find([...services], ({ stores }) => stores)?.stores || [],
+    rows: products || [],
+    categories: categories || [],
+    manufacturers: manufacturers || [],
+    stores: stores || [],
   };
 }
