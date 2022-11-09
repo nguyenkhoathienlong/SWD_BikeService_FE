@@ -34,7 +34,7 @@ const ServiceCreateEdit = ({
           name="name"
           label="Name"
           variant="outlined"
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange("name", e.target.value)}
           fullWidth
           value={rowData.name}
           required
@@ -43,8 +43,7 @@ const ServiceCreateEdit = ({
           name="price"
           label="Price"
           variant="outlined"
-          type="number"
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange("price", e.target.value)}
           fullWidth
           value={rowData.price}
           required
@@ -53,8 +52,7 @@ const ServiceCreateEdit = ({
           name="quantity"
           label="Quantity"
           variant="outlined"
-          type="number"
-          onChange={(e) => handleChange(e)}
+          onChange={(e) => handleChange("quantity", e.target.value)}
           fullWidth
           value={rowData.quantity}
           required
@@ -65,7 +63,7 @@ const ServiceCreateEdit = ({
           autoSelect
           filterSelectedOptions
           options={manufacturers}
-          onChange={(e, value) => handleChange(e, value, "manufacturerId")}
+          onChange={(e, value) => handleChange("manufacturerId",value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
@@ -80,7 +78,7 @@ const ServiceCreateEdit = ({
           loading
           filterSelectedOptions
           options={categories}
-          onChange={(e, value) => handleChange(e, value, "categoryId")}
+          onChange={(e, value) => handleChange("categoryId",value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
@@ -95,7 +93,7 @@ const ServiceCreateEdit = ({
           loading
           filterSelectedOptions
           options={stores}
-          onChange={(e, value) => handleChange(e, value, "storeId")}
+          onChange={(e, value) => handleChange("storeId",value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
