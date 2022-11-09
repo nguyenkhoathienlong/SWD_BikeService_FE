@@ -1,36 +1,19 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/function-component-definition */
-/**
-=========================================================
-* Material Dashboard 2 React - v2.1.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
 // Material Dashboard 2 React components
 import { useState } from "react";
 import { useEffect } from "react";
 import Api from "api/api";
-import { setLoading, setError ,useMaterialUIController } from "context";
 import _ from "lodash";
-
+import EventFeature from "hooks";
 export default function ServiceTable() {
   /**
   =========================================================
   * Define Variable and State
   =========================================================
   */
-  const [products, setProducts] = useState([]);
-  const [controller, dispatch] = useMaterialUIController();
-
+  const [services, setServices] = useState([]);
+  const { doLoading, doError } = EventFeature() 
+ 
   /**
   =========================================================
   * API CALL for INIT SERVICE:
@@ -49,21 +32,31 @@ export default function ServiceTable() {
           manufacturers: await Api.getAllManufacturers(),
         },
         {
-          stores: await Api.getAllStores(),
+          stores:  await Api.getAllStores(),
         },
       ]);
-      if (data) {
-        setProducts(data);
-        setLoading(dispatch, false);
+      let check = _.every(data,(item) =>
+                                  _.isArray(item.products) ||
+                                  _.isArray(item.categories) ||
+                                  _.isArray(item.manufacturers) ||
+                                  _.isArray(item.stores)
+                          );
+      if (check) {
+        doLoading(false)
+        setServices(data);
+        
+      } else {
+        doError({error:true,message:'Wrong Type Of Data'})
+        doLoading(false)
       }
     } catch (err) {
-      setError(dispatch, {...err, error:true })
-      setLoading(dispatch, false);
+      doError({ ...err, error: true })
+      doLoading(false)
     }
   }
 
   useEffect(() => {
-    setLoading(dispatch, true);
+    doLoading(true)
     getData();
 
     /**
@@ -73,7 +66,7 @@ export default function ServiceTable() {
      * We need to have a clean up function
      * We don't have function to stop calling API, so we set the SERVICE STATE again for easy purpose
      */
-    return () => setProducts([]);
+    return () => setServices([]);
     //https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -90,9 +83,9 @@ export default function ServiceTable() {
       { Header: "Manufacturer", accessor: "Manufacturer", align: "center" },
       { Header: "Actions", accessor: "actions", align: "center" },
     ],
-    rows: _.find([...products], ({ products }) => products)?.products || [],
-    categories: _.find([...products], ({ categories }) => categories)?.categories || [],
-    manufacturers: _.find([...products], ({ manufacturers }) => manufacturers)?.manufacturers || [],
-    stores: _.find([...products], ({ stores }) => stores)?.stores || [],
+    rows: _.find([...services], ({ products }) => products)?.products || [],
+    categories: _.find([...services], ({ categories }) => categories)?.categories || [],
+    manufacturers: _.find([...services], ({ manufacturers }) => manufacturers)?.manufacturers || [],
+    stores: _.find([...services], ({ stores }) => stores)?.stores || [],
   };
 }

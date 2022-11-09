@@ -115,8 +115,8 @@ class Api
     {
         return this.Request('get',`${this.baseURL}/api/Product/get-all-product`)     
     }
-
-    createProducts()
+    
+    CreateProduct()
     {
 
     }

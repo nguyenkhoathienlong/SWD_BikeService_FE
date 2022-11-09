@@ -126,7 +126,7 @@ function Service() {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name) ? +value.id: value.id,
+          [name]: _.includes(["manufacturerId", "categoryId", "storeId"], name) ? +value?.id: value?.id,
           [e.target.name]: e.target.type === "number" ? +e.target.value : e.target.value,
         },
       };
@@ -139,13 +139,13 @@ function Service() {
       rowData 
     } = dialog;
 
-    (type === 'add' && await Api.createProducts(rowData)) || 
-    (type === 'edit' && await Api.createProducts(rowData)) ||
-    (type === 'delete' && await Api.createProducts(rowData))
+    (type === 'add' && await Api.CreateProducts(rowData)) || 
+    (type === 'edit' && await Api.EditProduct(rowData)) ||
+    (type === 'delete' && await Api.DeleteProduct(rowData))
   };
 
 
-
+  
   return (
     <DashboardLayout>
       <DashboardNavbar />
