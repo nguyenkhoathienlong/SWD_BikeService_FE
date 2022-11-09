@@ -15,6 +15,7 @@ const MDError = ({ error, code, message }) => {
       }, 6000);
     }
     return () => clearInterval(timer.current);
+    
     //https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
