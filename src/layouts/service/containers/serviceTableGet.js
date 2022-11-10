@@ -38,15 +38,12 @@ export default function ServiceTable() {
   * Define Variable and State
   =========================================================
   */
-
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [manufacturers, setManufacturers] = useState([]);
+  const [stores, setStores] = useState([]);
   const { doLoading, doError } = EventFeature() 
-  const {
-    products,
-    categories,
-    manufacturers,
-    stores,
-    serviceCreate
-  } = Services()
+ 
   /**
   =========================================================
   * API CALL for INIT SERVICE:
@@ -74,7 +71,10 @@ export default function ServiceTable() {
           _.isArray(stores)
         ) {
           doLoading(false)
-          serviceCreate(products,categories,manufacturers,stores)
+          setProducts(products) 
+          setCategories(categories) 
+          setManufacturers(manufacturers)
+          setStores(stores) 
           
         } else {
           doError({error:true,message:'Wrong Type Of Data'})
@@ -98,7 +98,7 @@ export default function ServiceTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
- 
+  console.log('Nghi')
   return {
     columns: [
       {
