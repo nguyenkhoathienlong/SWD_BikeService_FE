@@ -32,7 +32,7 @@ function Services() {
   }
 }
 
-export default function ServiceTable() {
+export default function ServiceTable(){
   /**
   =========================================================
   * Define Variable and State
@@ -101,7 +101,7 @@ export default function ServiceTable() {
     //https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log('Nghi')
+
   return {
     columns: [
       {

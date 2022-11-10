@@ -87,7 +87,6 @@ function Service() {
     manufacturers,
     stores
   } = serviceTable();
-
   
   /*
   =========================================================
