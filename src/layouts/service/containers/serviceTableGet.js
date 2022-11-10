@@ -38,18 +38,21 @@ export default function ServiceTable() {
   * Define Variable and State
   =========================================================
   */
-  const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [manufacturers, setManufacturers] = useState([]);
-  const [stores, setStores] = useState([]);
   const { doLoading, doError } = EventFeature() 
- 
+  const {
+    products,
+    categories,
+    manufacturers,
+    stores,
+    serviceCreate
+  } = Services()
   /**
   =========================================================
   * API CALL for INIT SERVICE:
   =========================================================
   */
   useEffect(() => {
+    let isCall = true;
     ( async () => {
       try {
         doLoading(true)
@@ -64,22 +67,23 @@ export default function ServiceTable() {
             Api.getAllManufacturers(),
             Api.getAllStores(),
           ]);
-        if (
-          _.isArray(products) ||
-          _.isArray(categories) ||
-          _.isArray(manufacturers) ||
-          _.isArray(stores)
-        ) {
-          doLoading(false)
-          setProducts(products) 
-          setCategories(categories) 
-          setManufacturers(manufacturers)
-          setStores(stores) 
-          
-        } else {
-          doError({error:true,message:'Wrong Type Of Data'})
-          doLoading(false)
-        }
+          if(isCall) {
+            if (
+              _.isArray(products) ||
+              _.isArray(categories) ||
+              _.isArray(manufacturers) ||
+              _.isArray(stores)
+            ) {
+              doLoading(false)
+              serviceCreate(products,categories,manufacturers,stores)
+              
+            } else {
+              doLoading(false)
+              doError({error:true,message:'Wrong Type Of Data'})
+              
+            }
+          }
+        
       } catch (err) {
         doError({ ...err, error: true })
         doLoading(false)
@@ -93,11 +97,10 @@ export default function ServiceTable() {
      * We need to have a clean up function
      * We don't have function to stop calling API, so we set the SERVICE STATE again for easy purpose
      */
-    return () => []
+    return () => isCall = false
     //https://bobbyhadz.com/blog/react-hook-useeffect-has-missing-dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   console.log('Nghi')
   return {
     columns: [

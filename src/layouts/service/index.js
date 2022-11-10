@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useState,useMemo } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -58,6 +58,7 @@ import Api from "api/api";
       </MDBox>
     );
   };
+
   const baseData = {
     name: "",
     price: 0,
@@ -66,6 +67,9 @@ import Api from "api/api";
     categoryId: 0,
     storeId: "",
   };
+
+  const dataArr = Object.keys(baseData)
+
 
 function Service() {
 
@@ -84,6 +88,7 @@ function Service() {
     stores
   } = serviceTable();
 
+  
   /*
   =========================================================
   *  Function for Dialog:
@@ -128,18 +133,17 @@ function Service() {
   */
   const handleChange = (key,value) =>
   {
-   
      setDialog((prev) => {
       return {
         ...prev,
         rowData: {
           ...prev.rowData,
           [key]: (
-                    _.some(Object.keys(baseData),data => key.includes("Id") ) 
+                    _.some(dataArr,data => key.includes("Id") ) 
                     && +value.id
                 ) ||
                 (
-                    _.some(Object.keys(baseData), data => _.includes(['price','quantity'],key) )
+                    _.some(dataArr, data => _.includes(['price','quantity'],key) )
                     ? +value
                     : value
                 )
