@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState,useMemo } from "react";
+import { useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -39,40 +39,33 @@ import ServiceCreateEdit from "./containers/serviceCreateEdit";
 import ServiceDelete from "./containers/serviceDelete";
 import Api from "api/api";
 
-
-
-
-
-
-  /*
+/*
   =========================================================
   * Define Init UI 
         ** Update: Change 2 Button into Component to reduce render 
   =========================================================
   */
-  const Actions = ({row,handleOpenEditDialog,handleOpenDeleteDialog}) => {
-    return (
-      <MDBox>
-        <Button startIcon={<EditIcon />} onClick={(e) => handleOpenEditDialog(e)(row)} />
-        <Button startIcon={<DeleteIcon />} onClick={(e) => handleOpenDeleteDialog(e)(row)} />
-      </MDBox>
-    );
-  };
+const Actions = ({ row, handleOpenEditDialog, handleOpenDeleteDialog }) => {
+  return (
+    <MDBox>
+      <Button startIcon={<EditIcon />} onClick={(e) => handleOpenEditDialog(e)(row)} />
+      <Button startIcon={<DeleteIcon />} onClick={(e) => handleOpenDeleteDialog(e)(row)} />
+    </MDBox>
+  );
+};
 
-  const baseData = {
-    name: "",
-    price: 0,
-    quantity: 0,
-    manufacturerId: 0,
-    categoryId: 0,
-    storeId: "",
-  };
+const baseData = {
+  name: "",
+  price: 0,
+  quantity: 0,
+  manufacturerId: 0,
+  categoryId: 0,
+  storeId: "",
+};
 
-  const dataArr = Object.keys(baseData)
-
+const dataArr = Object.keys(baseData);
 
 function Service() {
-
   /**
   =========================================================
   * Define Variable and State
@@ -80,14 +73,13 @@ function Service() {
   */
 
   const [dialog, setDialog] = useState({ open: false, type: "", rowData: "" });
-  const { 
-    columns, 
-    rows,
-    categories,
-    manufacturers,
-    stores
-  } = serviceTable();
-  
+  const { columns, 
+          rows, 
+          categories, 
+          manufacturers, 
+          stores 
+        } = serviceTable();
+
   /*
   =========================================================
   *  Function for Dialog:
@@ -102,26 +94,23 @@ function Service() {
   const handleCloseDialog = () =>
     setDialog((prev) => ({ ...prev, open: false, type: "", rowData: "" }));
 
-  
   /*
   =========================================================
   *  Validate Input Field after submit
   =========================================================
   */
-  const validateSubmit = () =>
-  {
+  const validateSubmit = () => {
     const { rowData } = dialog;
-    return ( 
-      _.isEmpty(rowData.name) || 
-        isNaN(rowData.price) ||
-        isNaN(rowData.quantity) ||
-        isNaN(rowData.manufacturerId) ||
-        isNaN(rowData.categoryId) || 
-        isNaN(rowData.storeId) ||
-      _.isEmpty(rowData.category) 
-      )
-
-  }
+    return (
+      _.isEmpty(rowData.name) ||
+      isNaN(rowData.price) ||
+      isNaN(rowData.quantity) ||
+      isNaN(rowData.manufacturerId) ||
+      isNaN(rowData.categoryId) ||
+      isNaN(rowData.storeId) ||
+      _.isEmpty(rowData.category)
+    );
+  };
 
   /*
   =========================================================
@@ -130,69 +119,48 @@ function Service() {
         + Value and Name for AutoComplete
   =========================================================
   */
-  const handleChange = (key,value) =>
-  {
-     setDialog((prev) => {
+  const handleChange = (key, value) => {
+    setDialog((prev) => {
       return {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [key]: (
-                    _.some(dataArr,data => key.includes("Id") ) 
-                    && +value.id
-                ) ||
-                (
-                    _.some(dataArr, data => _.includes(['price','quantity'],key) )
-                    ? +value
-                    : value
-                )
-       
+          [key]:
+              (_.some(dataArr, (data) => key.includes("Id")) && +value.id) ||
+              (_.includes(["price", "quantity"], key) ? +value : value) 
         },
       };
-    }
-    );
-  }
-  const handleSubmit = async () => 
-  {
-    const { 
-      type, 
-      rowData 
-    } = dialog;
-
-    (type === 'add' && await Api.CreateProducts(rowData)) || 
-    (type === 'edit' && await Api.EditProduct(rowData)) ||
-    (type === 'delete' && await Api.DeleteProduct(rowData))
+    });
   };
+  const handleSubmit = async () => {
+    const { type, rowData } = dialog;
 
-
-
+    (type === "add" && (await Api.CreateProducts(rowData))) ||
+      (type === "edit" && (await Api.EditProduct(rowData))) ||
+      (type === "delete" && (await Api.DeleteProduct(rowData)));
+  };
+  console.log('Nghi',categories, 
+  manufacturers, 
+  stores )
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDModalDialog
         open={dialog.open}
-        confirmDisable={dialog.type === 'delete' ? false : validateSubmit() }
+        confirmDisable={dialog.type === "delete" ? false : validateSubmit()}
         handleSubmit={handleSubmit}
         handleCloseDialog={handleCloseDialog}
       >
-        {
-        ((dialog.type === "add" || dialog.type === "edit") && (
-          <ServiceCreateEdit 
+        {(dialog.type === "add" || dialog.type === "edit") && (
+          <ServiceCreateEdit
             rowData={dialog.rowData}
-            handleChange={handleChange}    
+            handleChange={handleChange}
             categories={categories}
             manufacturers={manufacturers}
             stores={stores}
           />
-        ))
-        }
-        {
-          (dialog.type === "delete" && (
-            <ServiceDelete 
-              rowData={dialog.rowData}
-            />
-          ))
-        }
+        )}
+        {dialog.type === "delete" && <ServiceDelete rowData={dialog.rowData} />}
       </MDModalDialog>
 
       <MDBox pt={6} pb={3}>
@@ -221,7 +189,16 @@ function Service() {
                 <DataTable
                   table={{
                     columns,
-                    rows: _.map([...rows] || [], (row) => ({ ...row, actions: <Actions row={row} handleOpenEditDialog={handleOpenEditDialog} handleOpenDeleteDialog={handleOpenDeleteDialog} /> })),
+                    rows: _.map([...rows] || [], (row) => ({
+                      ...row,
+                      actions: (
+                        <Actions
+                          row={row}
+                          handleOpenEditDialog={handleOpenEditDialog}
+                          handleOpenDeleteDialog={handleOpenDeleteDialog}
+                        />
+                      ),
+                    })),
                   }}
                   isSorted={false}
                   entriesPerPage={false}

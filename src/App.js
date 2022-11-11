@@ -43,6 +43,8 @@ import { useMaterialUIController, setMiniSidenav, setOpenConfigurator } from "co
 import brandWhite from "assets/images/logo-square.png";
 import brandDark from "assets/images/logo-square.png";
 
+import ProtectedRoute from "components/MDProtectedRoute";
+
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
   const {
@@ -88,17 +90,26 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
+  
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
-      if (route.collapse) {
-        return getRoutes(route.collapse);
-      }
-
-      if (route.route) {
-        return <Route exact path={route.route} element={route.component} key={route.key} />;
-      }
-
-      return null;
+      return route.isProtect 
+      ? (
+        <Route
+          key={route.key}
+          path={route.route}
+          element={
+            <ProtectedRoute 
+              redirectTo="/authentication"
+            >
+              {route.component}
+            </ProtectedRoute>
+          }
+        />
+      )
+      : <Route exact path={route.route} element={route.component} key={route.key} />
+      
+ 
     });
 
   const configsButton = (
@@ -144,10 +155,12 @@ export default function App() {
         </>
       )}
       {layout === "vr" && <Configurator />}
+
       <Routes>
         {getRoutes(routes)}
-        <Route path="*" element={<Navigate to="/dashboard" />} />
+        <Route path="*" element={<Navigate to="/authentication" />} />
       </Routes>
+
     </ThemeProvider>
   );
 }

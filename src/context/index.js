@@ -32,6 +32,9 @@ MaterialUI.displayName = "MaterialUIContext";
 // Material Dashboard 2 React reducer
 function reducer(state, action) {
   switch (action.type) {
+    case "LOGIN": {
+      return { ...state, login: action.value };
+    }
     case "LOADING": {
       return { ...state, isLoading: action.value };
     }
@@ -77,6 +80,11 @@ function reducer(state, action) {
 // Material Dashboard 2 React context provider
 function MaterialUIControllerProvider({ children }) {
   const initialState = {
+    login: {
+      isLogin:false,
+      email:"",
+      photoURL:"" 
+    },
     isLoading:false,
     isError: { 
       error: false,
@@ -121,6 +129,7 @@ MaterialUIControllerProvider.propTypes = {
 };
 
 // Context module functions
+const setLogin = (dispatch,value) => dispatch({type:"LOGIN", value})
 const setLoading = (dispatch, value) => dispatch({type:"LOADING", value})
 const setError = (dispatch, value) => dispatch({type:"ERROR", value})
 const setMiniSidenav = (dispatch, value) => dispatch({ type: "MINI_SIDENAV", value });
@@ -136,6 +145,7 @@ const setDarkMode = (dispatch, value) => dispatch({ type: "DARKMODE", value });
 
 
 export {
+  setLogin,
   setLoading,
   setError,
   MaterialUIControllerProvider,

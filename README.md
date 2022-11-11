@@ -1,4 +1,6 @@
 ### Swagger:
-https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod/swagger/index.html
+http://52.73.161.142/swagger/index.html?fbclid=IwAR3GqYTWeKH-EZPYPsJYhGxw1JNVJ5qLjuBarciVHvEQNkI7JI0aXDy7cW0
+
+bikeservice-u9yx.vercel.app
 
 
