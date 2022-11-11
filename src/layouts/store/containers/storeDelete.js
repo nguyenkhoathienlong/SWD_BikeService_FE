@@ -1,7 +1,7 @@
 import { DialogContentText } from "@mui/material";
 
 
-const ServiceDelete = ({rowData,handleCloseDialog}) => {
+const StoreDelete = ({rowData,handleCloseDialog}) => {
 
 
   
@@ -15,4 +15,4 @@ const ServiceDelete = ({rowData,handleCloseDialog}) => {
       );
 }
  
-export default ServiceDelete;
+export default StoreDelete;

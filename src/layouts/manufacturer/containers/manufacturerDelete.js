@@ -1,18 +1,18 @@
 import { DialogContentText } from "@mui/material";
 
 
-const ServiceDelete = ({rowData,handleCloseDialog}) => {
+const ManufacturerDelete = ({rowData,handleCloseDialog}) => {
 
 
   
     return (
         <>
             <DialogContentText>
-                Do you want to delete this product ID: {rowData.id}
+                Do you want to delete this manufacturer ID: {rowData.id}
             </DialogContentText>
         </>
  
       );
 }
  
-export default ServiceDelete;
+export default ManufacturerDelete;

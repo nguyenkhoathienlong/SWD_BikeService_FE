@@ -33,11 +33,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import serviceTable from "layouts/service/containers/serviceTableGet";
+import storeTable from "layouts/store/containers/storeTableGet";
 
-import ServiceCreateEdit from "./containers/storeCreateEdit";
+import StoreCreateEdit from "./containers/storeCreateEdit";
 import ServiceDelete from "./containers/storeDelete";
 import Api from "api/api";
+import StoreDelete from "./containers/storeDelete";
 
 
 
@@ -71,7 +72,7 @@ import Api from "api/api";
   const dataArr = Object.keys(baseData)
 
 
-function Service() {
+function Store() {
 
   /**
   =========================================================
@@ -86,7 +87,7 @@ function Service() {
     categories,
     manufacturers,
     stores
-  } = serviceTable();
+  } = storeTable();
   
   /*
   =========================================================
@@ -177,7 +178,7 @@ function Service() {
       >
         {
         ((dialog.type === "add" || dialog.type === "edit") && (
-          <ServiceCreateEdit 
+          <StoreCreateEdit 
             rowData={dialog.rowData}
             handleChange={handleChange}    
             categories={categories}
@@ -188,7 +189,7 @@ function Service() {
         }
         {
           (dialog.type === "delete" && (
-            <ServiceDelete 
+            <StoreDelete 
               rowData={dialog.rowData}
             />
           ))
@@ -211,7 +212,7 @@ function Service() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Service
+                  Store
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create
@@ -238,4 +239,4 @@ function Service() {
   );
 }
 
-export default Service;
+export default Store;

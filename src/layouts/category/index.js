@@ -33,10 +33,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import serviceTable from "layouts/service/containers/serviceTableGet";
+import categoryTable from "layouts/category/containers/categoryTableGet";
 
-import ServiceCreateEdit from "./containers/categoryCreateEdit";
-import ServiceDelete from "./containers/categoryDelete";
+import CategoryCreateEdit from "./containers/categoryCreateEdit";
+import CategoryDelete from "./containers/categoryDelete";
 import Api from "api/api";
 
 
@@ -67,7 +67,7 @@ import Api from "api/api";
   const dataArr = Object.keys(baseData)
 
 
-function Service() {
+function Category() {
 
   /**
   =========================================================
@@ -82,7 +82,7 @@ function Service() {
     categories,
     manufacturers,
     stores
-  } = serviceTable();
+  } = categoryTable();
   
   /*
   =========================================================
@@ -169,7 +169,7 @@ function Service() {
       >
         {
         ((dialog.type === "add" || dialog.type === "edit") && (
-          <ServiceCreateEdit 
+          <CategoryCreateEdit 
             rowData={dialog.rowData}
             handleChange={handleChange}    
             categories={categories}
@@ -180,7 +180,7 @@ function Service() {
         }
         {
           (dialog.type === "delete" && (
-            <ServiceDelete 
+            <CategoryDelete 
               rowData={dialog.rowData}
             />
           ))
@@ -203,7 +203,7 @@ function Service() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Service
+                  Category
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create
@@ -230,4 +230,4 @@ function Service() {
   );
 }
 
-export default Service;
+export default Category;

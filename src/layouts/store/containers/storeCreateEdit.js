@@ -11,21 +11,19 @@ import {
 
 
 
-const ServiceCreateEdit = ({ 
+const StoreCreateEdit = ({ 
     rowData, 
     handleChange,
-    categories,
-    manufacturers,
-    stores 
+    wards
   }) => {
 
   
   return (
     <div>
-      <DialogTitle>Create new product or service</DialogTitle>
+      <DialogTitle>Create new store</DialogTitle>
 
       <DialogContentText>
-        "To create roduct or service, please enter fully all of this content here. We will send updates
+        "To create store, please enter fully all of this content here. We will send updates
         occasionally."
       </DialogContentText>
 
@@ -40,21 +38,21 @@ const ServiceCreateEdit = ({
           required
         />
         <TextField
-          name="price"
-          label="Price"
+          name="phoneNumber"
+          label="Phone"
           variant="outlined"
-          onChange={(e) => handleChange("price", e.target.value)}
+          onChange={(e) => handleChange("phoneNumber", e.target.value)}
           fullWidth
-          value={rowData.price}
+          value={rowData.phoneNumber}
           required
         />
         <TextField
-          name="quantity"
-          label="Quantity"
+          name="address"
+          label="Address"
           variant="outlined"
-          onChange={(e) => handleChange("quantity", e.target.value)}
+          onChange={(e) => handleChange("address", e.target.value)}
           fullWidth
-          value={rowData.quantity}
+          value={rowData.address}
           required
         />
         <Autocomplete
@@ -62,59 +60,19 @@ const ServiceCreateEdit = ({
           loading
           autoSelect
           filterSelectedOptions
-          options={manufacturers}
-          onChange={(e, value) => handleChange("manufacturerId",value)}
+          options={wards}
+          onChange={(e, value) => handleChange("ward_id",value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Manufacturers" name="manufacturers" variant="outlined" />
+            <TextField {...params} label="Ward" name="ward" variant="outlined" />
           )}
         />
-        <Autocomplete
-          autoComplete
-          autoSelect
-          loading
-          filterSelectedOptions
-          options={categories}
-          onChange={(e, value) => handleChange("categoryId",value)}
-          disableClearable={true}
-          getOptionLabel={(option) => {
-            return option.name;
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Categories" name="categories" variant="outlined" />
-          )}
-        />
-        <Autocomplete
-          autoComplete
-          autoSelect
-          loading
-          filterSelectedOptions
-          options={stores}
-          onChange={(e, value) => handleChange("storeId",value)}
-          disableClearable={true}
-          getOptionLabel={(option) => {
-            return option.name;
-          }}
-          renderInput={(params) => (
-            <TextField {...params} label="Stores" name="stores" variant="outlined" />
-          )}
-        />
-        <RadioGroup
-          defaultValue="service"
-          name="radio-buttons-group"
-          sx={{
-            textAlign: "left",
-          }}
-        >
-          <FormControlLabel value="service" control={<Radio />} label="Type Service" />
-          <FormControlLabel value="product" control={<Radio />} label="Type Product" />
-        </RadioGroup>
       </FormControl>
     </div>
   );
 };
 
-export default ServiceCreateEdit;
+export default StoreCreateEdit;

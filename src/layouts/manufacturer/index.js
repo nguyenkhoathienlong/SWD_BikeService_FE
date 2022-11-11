@@ -33,10 +33,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import serviceTable from "layouts/service/containers/serviceTableGet";
+import manufacturerTable from "layouts/manufacturer/containers/manufacturerTableGet";
 
-import ServiceCreateEdit from "./containers/manufacturerCreateEdit";
-import ServiceDelete from "./containers/manufacturerDelete";
+import ManufacturerCreateEdit from "./containers/manufacturerCreateEdit";
+import ManufacturerDelete from "./containers/manufacturerDelete";
 import Api from "api/api";
 
 
@@ -71,7 +71,7 @@ import Api from "api/api";
   const dataArr = Object.keys(baseData)
 
 
-function Service() {
+function Manufacturer() {
 
   /**
   =========================================================
@@ -86,7 +86,7 @@ function Service() {
     categories,
     manufacturers,
     stores
-  } = serviceTable();
+  } = manufacturerTable();
   
   /*
   =========================================================
@@ -177,7 +177,7 @@ function Service() {
       >
         {
         ((dialog.type === "add" || dialog.type === "edit") && (
-          <ServiceCreateEdit 
+          <ManufacturerCreateEdit 
             rowData={dialog.rowData}
             handleChange={handleChange}    
             categories={categories}
@@ -188,7 +188,7 @@ function Service() {
         }
         {
           (dialog.type === "delete" && (
-            <ServiceDelete 
+            <ManufacturerDelete 
               rowData={dialog.rowData}
             />
           ))
@@ -211,7 +211,7 @@ function Service() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Service
+                  Manufacturer
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create
@@ -238,4 +238,4 @@ function Service() {
   );
 }
 
-export default Service;
+export default Manufacturer;
