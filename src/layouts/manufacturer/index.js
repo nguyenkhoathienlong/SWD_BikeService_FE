@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState,useMemo } from "react";
+import { useState, useMemo } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -33,57 +33,42 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import CategoryTable from "layouts/category/containers/categoryTableGet";
+import ManufacturerTable from "layouts/manufacturer/containers/manufacturerTableGet";
 
-import CategoryCreateEdit from "./containers/categoryCreateEdit";
-import CategoryDelete from "./containers/categoryDelete";
+import ManufacturerCreateEdit from "./containers/manufacturerCreateEdit";
+import ManufacturerDelete from "./containers/manufacturerDelete";
 import Api from "api/api";
 import EventFeature from "hooks";
 
-
-
-
-
-  /*
+/*
   =========================================================
   * Define Init UI 
         ** Update: Change 2 Button into Component to reduce render 
   =========================================================
   */
-  const Actions = ({row,handleOpenEditDialog,handleOpenDeleteDialog}) => {
-    return (
-      <MDBox>
-        <Button startIcon={<EditIcon />} onClick={(e) => handleOpenEditDialog(e)(row)} />
-        <Button startIcon={<DeleteIcon />} onClick={(e) => handleOpenDeleteDialog(e)(row)} />
-      </MDBox>
-    );
-  };
+const Actions = ({ row, handleOpenEditDialog, handleOpenDeleteDialog }) => {
+  return (
+    <MDBox>
+      <Button startIcon={<EditIcon />} onClick={(e) => handleOpenEditDialog(e)(row)} />
+      <Button startIcon={<DeleteIcon />} onClick={(e) => handleOpenDeleteDialog(e)(row)} />
+    </MDBox>
+  );
+};
 
-  const baseData = {
-    name: "",
-    isService: 1
-  };
+const baseData = {
+  name: "",
+};
 
-  const dataArr = Object.keys(baseData)
-
-
-function Category() {
-
+function Manufacturer() {
   /**
   =========================================================
   * Define Variable and State
   =========================================================
   */
-
+  const { doLoading, doError } = EventFeature();
   const [dialog, setDialog] = useState({ open: false, type: "", rowData: "" });
-  const { 
-    columns, 
-    rows,
-    categories,
-    manufacturers,
-    stores
-  } = CategoryTable();
-  const { doLoading, doError } = EventFeature() 
+  const { columns, rows } = ManufacturerTable();
+
   /*
   =========================================================
   *  Function for Dialog:
@@ -98,20 +83,15 @@ function Category() {
   const handleCloseDialog = () =>
     setDialog((prev) => ({ ...prev, open: false, type: "", rowData: "" }));
 
-  
   /*
   =========================================================
   *  Validate Input Field after submit
   =========================================================
   */
-  const validateSubmit = () =>
-  {
+  const validateSubmit = () => {
     const { rowData } = dialog;
-    return ( 
-      _.isEmpty(rowData.name) 
-      )
-
-  }
+    return _.isEmpty(rowData.name);
+  };
 
   /*
   =========================================================
@@ -120,73 +100,45 @@ function Category() {
         + Value and Name for AutoComplete
   =========================================================
   */
-  const handleChange = (key,value) =>
-  {
-     setDialog((prev) => {
+  const handleChange = (key, value) => {
+    setDialog((prev) => {
       return {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [key]: value
+          [key]: value,
         },
       };
-    }
-    );
-  }
-  const handleSubmit = async () => 
-  {
-    const { 
-      type, 
-      rowData 
-    } = dialog;
+    });
+  };
+  const handleSubmit = async () => {
+    const { type, rowData } = dialog;
     let api;
     try {
-      (type === 'add' && await ( api = Api.CreateCategory(rowData))) || 
-      (type === 'edit' && await ( api = Api.EditCategory(rowData))) ||
-      (type === 'delete' && await ( api = Api.DeleteCategory(rowData)))
-     if(api){
-        handleCloseDialog()
-        doLoading(false)
+      (type === "add" && (await (api = Api.CreateManufacturer(rowData)))) ||
+        (type === "edit" && (await (api = Api.EditManufacturer(rowData)))) ||
+        (type === "delete" && (await (api = Api.DeleteManufacturer(rowData))));
+      if (api) {
+        handleCloseDialog();
+        doLoading(false);
         window.location.reload(true);
-
       }
-    } catch(err) {
-      doError({ ...err, error: true, message:err.message })
-      handleCloseDialog()
-      doLoading(false)
-    }
-
+    } catch (err) {}
   };
-
-
 
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <MDModalDialog
         open={dialog.open}
-        confirmDisable={dialog.type === 'delete' ? false : validateSubmit() }
+        confirmDisable={dialog.type === "delete" ? false : validateSubmit()}
         handleSubmit={handleSubmit}
         handleCloseDialog={handleCloseDialog}
       >
-        {
-        ((dialog.type === "add" || dialog.type === "edit") && (
-          <CategoryCreateEdit 
-            rowData={dialog.rowData}
-            handleChange={handleChange}    
-            categories={categories}
-            manufacturers={manufacturers}
-            stores={stores}
-          />
-        ))
-        }
-        {
-          (dialog.type === "delete" && (
-            <CategoryDelete 
-              rowData={dialog.rowData}
-            />
-          ))
-        }
+        {(dialog.type === "add" || dialog.type === "edit") && (
+          <ManufacturerCreateEdit type={dialog.type} rowData={dialog.rowData} handleChange={handleChange} />
+        )}
+        {dialog.type === "delete" && <ManufacturerDelete rowData={dialog.rowData} />}
       </MDModalDialog>
 
       <MDBox pt={6} pb={3}>
@@ -205,7 +157,7 @@ function Category() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Category
+                  Manufacturer
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create
@@ -215,7 +167,16 @@ function Category() {
                 <DataTable
                   table={{
                     columns,
-                    rows: _.map([...rows] || [], (row) => ({ ...row, actions: <Actions row={row} handleOpenEditDialog={handleOpenEditDialog} handleOpenDeleteDialog={handleOpenDeleteDialog} /> })),
+                    rows: _.map([...rows] || [], (row) => ({
+                      ...row,
+                      actions: (
+                        <Actions
+                          row={row}
+                          handleOpenEditDialog={handleOpenEditDialog}
+                          handleOpenDeleteDialog={handleOpenDeleteDialog}
+                        />
+                      ),
+                    })),
                   }}
                   isSorted={false}
                   entriesPerPage={false}
@@ -232,4 +193,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Manufacturer;

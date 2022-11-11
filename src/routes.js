@@ -38,15 +38,18 @@ Coded by www.creative-tim.com
 // Material Dashboard 2 React layouts
 import Dashboard from "layouts/dashboard";
 import Service from "layouts/service";
-// import Billing from "layouts/billing";
-// import Notifications from "layouts/notifications";
-// import Profile from "layouts/profile";
+import Stores from "layouts/store";
+import Manufacturer from "layouts/manufacturer";
+import Categories from "layouts/category";
 import SignIn from "layouts/authentication/sign-in";
 // import SignUp from "layouts/authentication/sign-up";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
+import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import { Category, Store } from "@mui/icons-material";
+
 
 const routes = [
   {
@@ -66,6 +69,33 @@ const routes = [
     route: "/services",
     isProtect:true,
     component: <Service />,
+  },
+  {
+    type: "collapse",
+    name: "Category",
+    key: "category",
+    icon: <Icon fontSize="small">receipt_long</Icon>,
+    route: "/category",
+    isProtect:true,
+    component: <Categories />,
+  },
+  {
+    type: "collapse",
+    name: "Manufacturer",
+    key: "manufacturer",
+    icon: <Icon fontSize="small">notifications</Icon>,
+    route: "/manufacturer",
+    isProtect:true,
+    component: <Manufacturer />,
+  },
+  {
+    type: "collapse",
+    name: "Store",
+    key: "store",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/store",
+    isProtect:true,
+    component: <Stores />,
   },
   {
     type: "collapse",

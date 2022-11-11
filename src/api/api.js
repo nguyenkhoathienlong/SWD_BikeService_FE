@@ -53,7 +53,6 @@ class Api
 
     PostProcessing = (res) =>
     {
-
         if (res.status < 200 || res.status >= 300)
         {
             return Promise.reject({
@@ -95,19 +94,116 @@ class Api
         return axios(config)
     }
 
+    getWards()
+    {
+        return this.Request('get',`${this.baseURL}/get-all-ward`)  
+    }
+
     getAllCategories()
     {
         return this.Request('get',`${this.baseURL}/api/Category/get-all-category`)     
     }
 
+    CreateCategory(rowData)
+    {
+        
+        const payload = {
+            data : rowData
+        }
+
+        return this.Request('post',`${this.baseURL}/api/Category`,payload)  
+    }
+
+    EditCategory(rowData)
+    {
+        const {
+            id,
+            ...rest
+        } = rowData
+        const payload = {
+            data : rest
+        }
+        return this.Request('put',`${this.baseURL}/api/Category/${id}`,payload)  
+    }
+
+    DeleteCategory(rowData)
+    {
+        const {
+            id
+        } = rowData
+        return this.Request('delete',`${this.baseURL}/api/Category/${id}`)  
+    }
+
+    // Manufac
     getAllManufacturers()
     {
         return this.Request('get',`${this.baseURL}/get-all-manufacturer`)     
     }
 
+    CreateManufacturer(rowData)
+    {
+        
+        const payload = {
+            data : rowData
+        }
+
+        return this.Request('post',`${this.baseURL}/api/Manufactuer`,payload)  
+    }
+
+    EditManufacturer(rowData)
+    {
+        const {
+            id,
+            ...rest
+        } = rowData
+        const payload = {
+            data : rest
+        }
+        return this.Request('put',`${this.baseURL}/api/Manufactuer/${id}`,payload)  
+    }
+
+    DeleteManufacturer(rowData)
+    {
+        const {
+            id
+        } = rowData
+        return this.Request('delete',`${this.baseURL}/api/Manufactuer/${id}`)  
+    }
+
+    //STORE:
     getAllStores()
     {
         return this.Request('get',`${this.baseURL}/api/Store/get-all-store`) 
+    }
+
+    CreateStore(rowData)
+    {
+        
+        const payload = {
+            data : rowData
+        }
+
+        return this.Request('post',`${this.baseURL}/api/Store`,payload)  
+    }
+
+    EditStore(rowData)
+    {
+        const {
+            id,
+            ...rest
+        } = rowData
+        const payload = {
+            data : rest
+        }
+        return this.Request('put',`${this.baseURL}/api/Store/${id}`,payload)  
+    }
+
+    DeleteStore(rowData)
+    {
+        const {
+            id
+        } = rowData
+        return this.Request('delete',`${this.baseURL}/api/Store/${id}`)  
     }
 
     // Products:
@@ -122,38 +218,46 @@ class Api
             name,
             price,
             quantity,
-            manufacturerId,
-            categoryId,
-            storeId,
+            manufacturer,
+            category,
+            store,
             isService,
-            isActive,
-            } = rowData;
+            isActive
+        } = rowData
 
         const payload = {
             data : {
                 name,
                 price,
                 quantity,
-                manufacturerId,
-                categoryId,
-                storeId,
+                manufacturerId:+manufacturer.id,
+                categoryId:+category.id,
+                storeId:+store.id,
                 isService,
-                isActive,
-            }
+                isActive}
         }
+
         return this.Request('post',`${this.baseURL}/api/Product`,payload)  
     }
 
-    
-
-    EditProduct()
+    EditProduct(rowData)
     {
-        
+        const {
+            id,
+            ...rest
+        } = rowData
+        const payload = {
+            data : rest
+        }
+        return this.Request('put',`${this.baseURL}/api/Product/${id}`,payload)  
     }
 
-    DeleteProducts()
+    DeleteProduct(rowData)
     {
-
+        const {
+            id
+        } = rowData
+        return this.Request('delete',`${this.baseURL}/api/Product/${id}`)  
     }
 
 

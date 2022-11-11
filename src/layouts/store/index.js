@@ -33,11 +33,12 @@ import EditIcon from "@mui/icons-material/Edit";
 import _ from "lodash";
 
 // Utils and Service Component
-import CategoryTable from "layouts/category/containers/categoryTableGet";
+import StoreTable from "layouts/store/containers/storeTableGet";
 
-import CategoryCreateEdit from "./containers/categoryCreateEdit";
-import CategoryDelete from "./containers/categoryDelete";
+import StoreCreateEdit from "./containers/storeCreateEdit";
+import ServiceDelete from "./containers/storeDelete";
 import Api from "api/api";
+import StoreDelete from "./containers/storeDelete";
 import EventFeature from "hooks";
 
 
@@ -61,13 +62,15 @@ import EventFeature from "hooks";
 
   const baseData = {
     name: "",
-    isService: 1
+    phoneNumber:"",
+    address:"",
+    wardId:0
   };
 
   const dataArr = Object.keys(baseData)
 
 
-function Category() {
+function Store() {
 
   /**
   =========================================================
@@ -79,10 +82,8 @@ function Category() {
   const { 
     columns, 
     rows,
-    categories,
-    manufacturers,
-    stores
-  } = CategoryTable();
+    wards
+  } = StoreTable();
   const { doLoading, doError } = EventFeature() 
   /*
   =========================================================
@@ -108,14 +109,17 @@ function Category() {
   {
     const { rowData } = dialog;
     return ( 
-      _.isEmpty(rowData.name) 
+      _.isEmpty(rowData.name) || 
+      _.isEmpty(rowData.phoneNumber) || 
+      _.isEmpty(rowData.address) || 
+        isNaN(rowData.wardId)
       )
 
   }
 
   /*
   =========================================================
-  *  Handle changing Input and Submit Function:
+  *  Handle changing Input and Subaddressit Function:
         + Event for TextField
         + Value and Name for AutoComplete
   =========================================================
@@ -127,7 +131,7 @@ function Category() {
         ...prev,
         rowData: {
           ...prev.rowData,
-          [key]: value
+          [key]: key === 'wardId' ? +value : value
         },
       };
     }
@@ -139,11 +143,13 @@ function Category() {
       type, 
       rowData 
     } = dialog;
+
     let api;
     try {
-      (type === 'add' && await ( api = Api.CreateCategory(rowData))) || 
-      (type === 'edit' && await ( api = Api.EditCategory(rowData))) ||
-      (type === 'delete' && await ( api = Api.DeleteCategory(rowData)))
+      (type === 'add' && await ( api = Api.CreateStore(rowData))) || 
+      (type === 'edit' && await ( api = Api.EditStore(rowData))) ||
+      (type === 'delete' && await ( api = Api.DeleteStore(rowData)))
+
      if(api){
         handleCloseDialog()
         doLoading(false)
@@ -171,18 +177,17 @@ function Category() {
       >
         {
         ((dialog.type === "add" || dialog.type === "edit") && (
-          <CategoryCreateEdit 
+          <StoreCreateEdit 
+            type={dialog.rowData}
             rowData={dialog.rowData}
-            handleChange={handleChange}    
-            categories={categories}
-            manufacturers={manufacturers}
-            stores={stores}
+            handleChange={handleChange}   
+            wards={wards}
           />
         ))
         }
         {
           (dialog.type === "delete" && (
-            <CategoryDelete 
+            <StoreDelete 
               rowData={dialog.rowData}
             />
           ))
@@ -205,7 +210,7 @@ function Category() {
                 sx={{ display: "flex", justifyContent: "space-between" }}
               >
                 <MDTypography variant="h6" color="white">
-                  Category
+                  Store
                 </MDTypography>
                 <Button variant="contained" color="success" onClick={handleOpenCreateDialog}>
                   Create
@@ -232,4 +237,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Store;

@@ -10,16 +10,17 @@ import {
   FormControlLabel,
   Box,
 } from "@mui/material";
-import MDTypography from "components/MDTypography";
 
-const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, stores }) => {
+
+const ServiceCreateEdit = ({ type,rowData, handleChange, categories, manufacturers, stores }) => {
+
   return (
     <div>
-      <DialogTitle>Create rowData</DialogTitle>
+      <DialogTitle>{type=== 'add' ? "Create" : "Edit"} new product or service</DialogTitle>
 
       <DialogContentText>
-        "To create rowData, please enter fully all of this content here. We will send updates
-        occasionally."
+        To create roduct or service, please enter fully all of this content here. We will send updates
+        occasionally.
       </DialogContentText>
 
       <FormControl fullWidth>
@@ -56,10 +57,10 @@ const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, s
           autoSelect
           filterSelectedOptions
           options={manufacturers}
-          onChange={(e, value) => handleChange("manufacturerId", value)}
+          onChange={(e, value) => handleChange("manufacturer", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
-            return option.name;
+            return option.name || ''
           }}
           renderOption={(props, option) => {
             return (
@@ -78,10 +79,10 @@ const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, s
           loading
           filterSelectedOptions
           options={categories}
-          onChange={(e, value) => handleChange("categoryId", value)}
+          onChange={(e, value) => handleChange("category", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
-            return option.name;
+            return option.name || ''
           }}
           renderOption={(props, option) => {
             return (
@@ -100,10 +101,10 @@ const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, s
           loading
           filterSelectedOptions
           options={stores}
-          onChange={(e, value) => handleChange("storeId", value)}
+          onChange={(e, value) => handleChange("store", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
-            return option.name;
+            return option.name || ''
           }}
           renderOption={(props, option) => {
             return (
@@ -124,14 +125,13 @@ const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, s
             textAlign: "left",
             marginTop:'5px'
           }}
-          onChange={(e) => handleChange(['isService','isActive'],e.target.value) }
+          onChange={(e) => handleChange('isService',e.target.value) }
           
         >
           <FormLabel id="demo-radio-buttons-group-label">Type</FormLabel>
-
           <FormControlLabel value="isService" control={<Radio />} label="Type Service"/>
-          <FormControlLabel value="isActive" control={<Radio />} label="Type Product"/>
         </RadioGroup>
+        {/* <FormControlLabel value="isActive" control={<Radio />} label="Type Product"/> */}
       </FormControl>
     </div>
   );

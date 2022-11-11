@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // @mui material components
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -38,7 +38,7 @@ import serviceTable from "layouts/service/containers/serviceTableGet";
 import ServiceCreateEdit from "./containers/serviceCreateEdit";
 import ServiceDelete from "./containers/serviceDelete";
 import Api from "api/api";
-
+import EventFeature from "hooks";
 /*
   =========================================================
   * Define Init UI 
@@ -58,14 +58,14 @@ const baseData = {
   name: "",
   price: 0,
   quantity: 0,
-  manufacturerId: 0,
-  categoryId: 0,
-  storeId: "",
+  manufacturer: {name:''},
+  category: {name:''},
+  store:{name:''},
   isService:0,
-  isActive:0
+  isActive:1
 };
 
-const dataArr = Object.keys(baseData);
+
 
 function Service() {
   /**
@@ -81,6 +81,8 @@ function Service() {
           manufacturers, 
           stores 
         } = serviceTable();
+
+  const { doLoading, doError } = EventFeature() 
 
   /*
   =========================================================
@@ -103,13 +105,14 @@ function Service() {
   */
   const validateSubmit = () => {
     const { rowData } = dialog;
+    
     return (
       _.isEmpty(rowData.name) ||
       isNaN(rowData.price) ||
       isNaN(rowData.quantity) ||
-      isNaN(rowData.manufacturerId) ||
-      isNaN(rowData.categoryId) ||
-      isNaN(rowData.storeId) ||
+      !_.isObject(rowData.manufacturer) ||
+      !_.isObject(rowData.category) ||
+      !_.isObject(rowData.store) ||
       isNaN(rowData.isActive) ||
       isNaN(rowData.isService) 
     );
@@ -123,42 +126,41 @@ function Service() {
   =========================================================
   */
   const handleChange = (key, value) => {
-    if(_.isArray(key))
-    {
-      setDialog((prev) => {
-        return {
-          ...prev,
-          rowData: {
-            ...prev.rowData,
-            isService: value === 'isService' ? 1 : 0 ,
-            isActive: value === 'isActive' ? 1 : 0
-          }
-        };
-      });
-    }
-    else {
       setDialog((prev) => {
         return {
           ...prev,
           rowData: {
             ...prev.rowData,
             [key]:
-                (_.some(dataArr, (data) => key.includes("Id")) && +value.id) ||
+                (key===value && +1) ||
                 (_.includes(["price", "quantity"], key) ? +value : value) 
           },
         };
       });
-    }
   };
+
 
   const handleSubmit = async () => {
     const { type, rowData } = dialog;
+    let api;
+    doLoading(true)
+    try {
+      (type === "add" && (api = await Api.CreateProduct(rowData))) ||
+      (type === "edit" && (api = await Api.EditProduct(rowData))) ||
+      (type === "delete" && (api = await Api.DeleteProduct(rowData)));
+      if(api){
+        handleCloseDialog()
+        doLoading(false)
+        window.location.reload(true);
 
-    (type === "add" && (await Api.CreateProduct(rowData))) ||
-      (type === "edit" && (await Api.EditProduct(rowData))) ||
-      (type === "delete" && (await Api.DeleteProduct(rowData)));
+      }
+    } catch(err) {
+      doError({ ...err, error: true, message:err.message })
+      handleCloseDialog()
+      doLoading(false)
+    }
+ 
   };
-
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -170,6 +172,7 @@ function Service() {
       >
         {(dialog.type === "add" || dialog.type === "edit") && (
           <ServiceCreateEdit
+            type={dialog.type}
             rowData={dialog.rowData}
             handleChange={handleChange}
             categories={categories}
@@ -206,8 +209,10 @@ function Service() {
                 <DataTable
                   table={{
                     columns,
-                    rows: _.map([...rows] || [], (row) => ({
+                    rows: _.map([...rows] || [], (row) => (
+                      {
                       ...row,
+                      Manufacturer:_.find(manufacturers|| [] , data=> data.id === row.manufacturerId )?.name,
                       actions: (
                         <Actions
                           row={row}
