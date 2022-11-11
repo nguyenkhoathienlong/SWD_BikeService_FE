@@ -5,6 +5,7 @@ import {
   DialogContentText,
   Autocomplete,
   RadioGroup,
+  FormLabel,
   Radio,
   FormControlLabel,
   Box,
@@ -117,15 +118,19 @@ const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, s
         />
         <RadioGroup
           defaultValue="service"
+          id="demo-row-radio-buttons-group-label"
           name="radio-buttons-group"
           sx={{
             textAlign: "left",
+            marginTop:'5px'
           }}
-          //onChange={(e) => handleChange(e.target.value, e.target.value)}
-          onChange={(e) => console.log('Nghi',e.target.value) }
+          onChange={(e) => handleChange(['isService','isActive'],e.target.value) }
+          
         >
-          <FormControlLabel value="isService" control={<Radio />} label="Type Service" />
-          <FormControlLabel value="isActive" control={<Radio />} label="Type Product" />
+          <FormLabel id="demo-radio-buttons-group-label">Type</FormLabel>
+
+          <FormControlLabel value="isService" control={<Radio />} label="Type Service"/>
+          <FormControlLabel value="isActive" control={<Radio />} label="Type Product"/>
         </RadioGroup>
       </FormControl>
     </div>

@@ -9,7 +9,7 @@ const MDModalDialog = (
         open,
         handleCloseDialog,
         confirmDisable,
-        handleSumit,
+        handleSubmit,
         children
     }
     ) => {
@@ -27,7 +27,7 @@ const MDModalDialog = (
                     sx={{display:'flex',justifyContent:'left'}}
                 >
                     <Button 
-                        onClick={handleSumit}
+                        onClick={handleSubmit}
                         variant="contained"
                         disabled={confirmDisable}
                     >

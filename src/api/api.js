@@ -4,7 +4,7 @@ class Api
 {
     constructor() 
     {
-        this.baseURL = 'https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod';
+        this.baseURL = 'http://52.73.161.142';
 
         axios.interceptors.request.use(
             config =>
@@ -93,11 +93,6 @@ class Api
         };
         config['payload'] = payload || {}
         return axios(config)
-    }
-
-    Login()
-    {
-        
     }
 
     getAllCategories()

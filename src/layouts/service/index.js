@@ -61,6 +61,8 @@ const baseData = {
   manufacturerId: 0,
   categoryId: 0,
   storeId: "",
+  isService:0,
+  isActive:0
 };
 
 const dataArr = Object.keys(baseData);
@@ -108,7 +110,8 @@ function Service() {
       isNaN(rowData.manufacturerId) ||
       isNaN(rowData.categoryId) ||
       isNaN(rowData.storeId) ||
-      _.isEmpty(rowData.category)
+      isNaN(rowData.isActive) ||
+      isNaN(rowData.isService) 
     );
   };
 
@@ -120,28 +123,42 @@ function Service() {
   =========================================================
   */
   const handleChange = (key, value) => {
-    setDialog((prev) => {
-      return {
-        ...prev,
-        rowData: {
-          ...prev.rowData,
-          [key]:
-              (_.some(dataArr, (data) => key.includes("Id")) && +value.id) ||
-              (_.includes(["price", "quantity"], key) ? +value : value) 
-        },
-      };
-    });
+    if(_.isArray(key))
+    {
+      setDialog((prev) => {
+        return {
+          ...prev,
+          rowData: {
+            ...prev.rowData,
+            isService: value === 'isService' ? 1 : 0 ,
+            isActive: value === 'isActive' ? 1 : 0
+          }
+        };
+      });
+    }
+    else {
+      setDialog((prev) => {
+        return {
+          ...prev,
+          rowData: {
+            ...prev.rowData,
+            [key]:
+                (_.some(dataArr, (data) => key.includes("Id")) && +value.id) ||
+                (_.includes(["price", "quantity"], key) ? +value : value) 
+          },
+        };
+      });
+    }
   };
+
   const handleSubmit = async () => {
     const { type, rowData } = dialog;
 
-    (type === "add" && (await Api.CreateProducts(rowData))) ||
+    (type === "add" && (await Api.CreateProduct(rowData))) ||
       (type === "edit" && (await Api.EditProduct(rowData))) ||
       (type === "delete" && (await Api.DeleteProduct(rowData)));
   };
-  console.log('Nghi',categories, 
-  manufacturers, 
-  stores )
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
