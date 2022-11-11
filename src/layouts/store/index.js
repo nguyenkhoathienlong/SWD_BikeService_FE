@@ -35,8 +35,8 @@ import _ from "lodash";
 // Utils and Service Component
 import serviceTable from "layouts/service/containers/serviceTableGet";
 
-import ServiceCreateEdit from "./containers/categoryCreateEdit";
-import ServiceDelete from "./containers/categoryDelete";
+import ServiceCreateEdit from "./containers/storeCreateEdit";
+import ServiceDelete from "./containers/storeDelete";
 import Api from "api/api";
 
 
@@ -61,7 +61,11 @@ import Api from "api/api";
 
   const baseData = {
     name: "",
-    is_actived: 1
+    price: 0,
+    quantity: 0,
+    manufacturerId: 0,
+    categoryId: 0,
+    storeId: "",
   };
 
   const dataArr = Object.keys(baseData)
@@ -109,8 +113,12 @@ function Service() {
     const { rowData } = dialog;
     return ( 
       _.isEmpty(rowData.name) || 
-        isNaN(rowData.is_actived) 
-        
+        isNaN(rowData.price) ||
+        isNaN(rowData.quantity) ||
+        isNaN(rowData.manufacturerId) ||
+        isNaN(rowData.categoryId) || 
+        isNaN(rowData.storeId) ||
+      _.isEmpty(rowData.category) 
       )
 
   }

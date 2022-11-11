@@ -4,7 +4,7 @@ class Api
 {
     constructor() 
     {
-        this.baseURL = 'https://nmrp3a0bjc.execute-api.us-east-1.amazonaws.com/Prod';
+        this.baseURL = 'http://52.73.161.142/swagger/index.html?fbclid=IwAR0Cj-zfp9K6NfGpGLkDbZAlt7PMA_aIDR8pekoL06Tofpua7DjaBxgqCmk';
 
         axios.interceptors.request.use(
             config =>
@@ -113,7 +113,7 @@ class Api
     // Products:
     getAllProducts()
     {
-        return this.Request('get',`${this.baseURL}/api/Product/get-all-product`)     
+        return this.Request('get',`${this.baseURL}/api/Category/get-all-product`)     
     }
     
     CreateProduct()
