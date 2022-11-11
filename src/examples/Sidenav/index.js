@@ -41,15 +41,18 @@ import sidenavLogoLabel from "examples/Sidenav/styles/sidenav";
 
 // Material Dashboard 2 React context
 import {
+  setLoading,
+  setLogin,
   useMaterialUIController,
   setMiniSidenav,
   setTransparentSidenav,
   setWhiteSidenav,
 } from "context";
-
+import EventFeature from '../../hooks/index'
 function Sidenav({ color, brand, brandName, routes, ...rest }) {
+  const {doLoading} = EventFeature()
   const [controller, dispatch] = useMaterialUIController();
-  const { miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
+  const { login, miniSidenav, transparentSidenav, whiteSidenav, darkMode } = controller;
   const location = useLocation();
   const collapseName = location.pathname.replace("/", "");
 
@@ -62,6 +65,10 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }
 
   const closeSidenav = () => setMiniSidenav(dispatch, true);
+  const logOutAuthentication = () => {
+    localStorage.removeItem('UID')
+    setLogin(dispatch,{isLogin:false,email:''})
+  }
 
   useEffect(() => {
     // A function that sets the mini state of the sidenav.
@@ -84,61 +91,27 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
   }, [dispatch, location, transparentSidenav, whiteSidenav]);
 
   // Render all the routes from the routes.js (All the visible items on the Sidenav)
-  const renderRoutes = routes.map(({ type, name, icon, title, noCollapse, key, href, route }) => {
-    let returnValue;
-
-    if (type === "collapse") {
-      returnValue = href ? (
-        <Link
-          href={href}
-          key={key}
-          target="_blank"
-          rel="noreferrer"
-          sx={{ textDecoration: "none" }}
-        >
-          <SidenavCollapse
-            name={name}
-            icon={icon}
-            active={key === collapseName}
-            noCollapse={noCollapse}
-          />
-        </Link>
-      ) : (
-        <NavLink key={key} to={route}>
-          <SidenavCollapse name={name} icon={icon} active={key === collapseName} />
-        </NavLink>
-      );
-    } else if (type === "title") {
-      returnValue = (
-        <MDTypography
-          key={key}
-          color={textColor}
-          display="block"
-          variant="caption"
-          fontWeight="bold"
-          textTransform="uppercase"
-          pl={3}
-          mt={2}
-          mb={1}
-          ml={1}
-        >
-          {title}
-        </MDTypography>
-      );
-    } else if (type === "divider") {
-      returnValue = (
-        <Divider
-          key={key}
-          light={
-            (!darkMode && !whiteSidenav && !transparentSidenav) ||
-            (darkMode && !transparentSidenav && whiteSidenav)
-          }
-        />
-      );
+  const renderRoutes = routes.map(
+    ({ type, name, icon, title, noCollapse, key, href, route, isProtect }) => {
+      let returnValue;
+      if (type === "collapse") {
+        if (!isProtect) {
+          returnValue = (
+            <div key={key} onClick={logOutAuthentication}>
+              <SidenavCollapse icon={icon} name="Log Out" active={key === collapseName} />
+            </div>
+          );
+        } else {
+          returnValue = (
+            <NavLink key={key} to={route}>
+              <SidenavCollapse icon={icon} name={name} active={key === collapseName} />
+            </NavLink>
+          );
+        }
+      }
+      return returnValue;
     }
-
-    return returnValue;
-  });
+  );
 
   return (
     <SidenavRoot
@@ -179,7 +152,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
         }
       />
       <List>{renderRoutes}</List>
-  
     </SidenavRoot>
   );
 }

@@ -82,10 +82,8 @@ function MaterialUIControllerProvider({ children }) {
   const initialState = {
     login: {
       isLogin:false,
-      loginInfo: {
-        email:"",
-        photoURL:""
-      }
+      email:"",
+      photoURL:"" 
     },
     isLoading:false,
     isError: { 

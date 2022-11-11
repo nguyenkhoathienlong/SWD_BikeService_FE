@@ -139,7 +139,9 @@ function Service() {
       (type === "edit" && (await Api.EditProduct(rowData))) ||
       (type === "delete" && (await Api.DeleteProduct(rowData)));
   };
-  console.log('Nghi',dialog.rowData)
+  console.log('Nghi',categories, 
+  manufacturers, 
+  stores )
   return (
     <DashboardLayout>
       <DashboardNavbar />

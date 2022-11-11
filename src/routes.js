@@ -46,7 +46,7 @@ import SignIn from "layouts/authentication/sign-in";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
-import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
+import ElectricBikeIcon from '@mui/icons-material/ElectricBike';
 
 const routes = [
   {
@@ -55,14 +55,16 @@ const routes = [
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
+    isProtect:true,
     component: <Dashboard />,
   },
   {
     type: "collapse",
     name: "Service & Product",
     key: "services",
-    icon: <Icon fontSize="small">services</Icon>,
+    icon: <ElectricBikeIcon fontSize="small"/>,
     route: "/services",
+    isProtect:true,
     component: <Service />,
   },
   {
@@ -71,16 +73,9 @@ const routes = [
     key: "sign-in",
     icon: <Icon fontSize="small">login</Icon>,
     route: "/authentication",
+    isProtect:false,
     component: <SignIn />,
   },
-  // {
-  //   type: "collapse",
-  //   name: "Sign Up",
-  //   key: "sign-up",
-  //   icon: <Icon fontSize="small">assignment</Icon>,
-  //   route: "/authentication/sign-up",
-  //   component: <SignUp />,
-  // },
 ];
 
 export default routes;

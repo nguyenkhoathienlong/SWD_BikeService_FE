@@ -47,13 +47,7 @@ function Basic() {
   const navigate = useNavigate();
   const [controller, dispatch] = useMaterialUIController();
   const {
-    login: {
-      isLogin,
-      loginInfo: {
-        email,
-        photoURL
-      }
-    },
+    login
   } = controller;
 
  const {doError} = EventFeature();
@@ -63,7 +57,8 @@ function Basic() {
       const signIn = await signInWithPopup(auth,provider)
       if(signIn) {
         if(_.includes(Object.values(UUID), signIn.user.uid)) {
-          setLogin(dispatch,)
+          localStorage.setItem('UID',signIn.user.uid)
+          setLogin(dispatch,{...login, isLogin:true,email:signIn.user.email,photoURL:signIn.user.photoURL})
           navigate('/dashboard')
         }
         else {
@@ -79,7 +74,6 @@ function Basic() {
     
     
   }
-
 
 
   return (
