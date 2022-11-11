@@ -62,7 +62,7 @@ export default function ManufacturerTable(){
   return {
     columns: [
       {
-        Header: "Name service",
+        Header: "Name manufacturer",
         accessor: "name",
         align: "left",
       },
