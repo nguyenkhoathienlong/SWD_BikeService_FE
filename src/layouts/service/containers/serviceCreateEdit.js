@@ -7,19 +7,11 @@ import {
   RadioGroup,
   Radio,
   FormControlLabel,
+  Box,
 } from "@mui/material";
+import MDTypography from "components/MDTypography";
 
-
-
-const ServiceCreateEdit = ({ 
-    rowData, 
-    handleChange,
-    categories,
-    manufacturers,
-    stores 
-  }) => {
-
-  
+const ServiceCreateEdit = ({ rowData, handleChange, categories, manufacturers, stores }) => {
   return (
     <div>
       <DialogTitle>Create rowData</DialogTitle>
@@ -63,10 +55,17 @@ const ServiceCreateEdit = ({
           autoSelect
           filterSelectedOptions
           options={manufacturers}
-          onChange={(e, value) => handleChange("manufacturerId",value)}
+          onChange={(e, value) => handleChange("manufacturerId", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
+          }}
+          renderOption={(props, option) => {
+            return (
+              <Box component="li" {...props} key={option.id}>
+                {option.name}
+              </Box>
+            );
           }}
           renderInput={(params) => (
             <TextField {...params} label="Manufacturers" name="manufacturers" variant="outlined" />
@@ -78,10 +77,17 @@ const ServiceCreateEdit = ({
           loading
           filterSelectedOptions
           options={categories}
-          onChange={(e, value) => handleChange("categoryId",value)}
+          onChange={(e, value) => handleChange("categoryId", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
+          }}
+          renderOption={(props, option) => {
+            return (
+              <Box component="li" {...props} key={option.id}>
+                {option.name}
+              </Box>
+            );
           }}
           renderInput={(params) => (
             <TextField {...params} label="Categories" name="categories" variant="outlined" />
@@ -93,10 +99,17 @@ const ServiceCreateEdit = ({
           loading
           filterSelectedOptions
           options={stores}
-          onChange={(e, value) => handleChange("storeId",value)}
+          onChange={(e, value) => handleChange("storeId", value)}
           disableClearable={true}
           getOptionLabel={(option) => {
             return option.name;
+          }}
+          renderOption={(props, option) => {
+            return (
+              <Box component="li" {...props} key={option.id}>
+                {option.name}
+              </Box>
+            );
           }}
           renderInput={(params) => (
             <TextField {...params} label="Stores" name="stores" variant="outlined" />
@@ -108,9 +121,11 @@ const ServiceCreateEdit = ({
           sx={{
             textAlign: "left",
           }}
+          //onChange={(e) => handleChange(e.target.value, e.target.value)}
+          onChange={(e) => console.log('Nghi',e.target.value) }
         >
-          <FormControlLabel value="service" control={<Radio />} label="Type Service" />
-          <FormControlLabel value="product" control={<Radio />} label="Type Product" />
+          <FormControlLabel value="isService" control={<Radio />} label="Type Service" />
+          <FormControlLabel value="isActive" control={<Radio />} label="Type Product" />
         </RadioGroup>
       </FormControl>
     </div>

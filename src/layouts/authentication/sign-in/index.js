@@ -16,35 +16,71 @@ Coded by www.creative-tim.com
 import { useState } from "react";
 
 // react-router-dom components
-import { Link } from "react-router-dom";
 
 // @mui material components
 import Card from "@mui/material/Card";
-import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
 
 // @mui icons
-import FacebookIcon from "@mui/icons-material/Facebook";
-import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
 
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
-import MDInput from "components/MDInput";
-import MDButton from "components/MDButton";
 
 // Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-
 // Images
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
-function Basic() {
-  const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
+import {auth,provider} from '../../../firebase'
+import { signInWithPopup,} from "firebase/auth";
+import { setLogin ,useMaterialUIController } from "context";
+import EventFeature from "hooks";
+import {useNavigate} from 'react-router-dom'
+import { UUID } from "./uuid.config";
+import _ from 'lodash'
+
+function Basic() {
+  const navigate = useNavigate();
+  const [controller, dispatch] = useMaterialUIController();
+  const {
+    login: {
+      isLogin,
+      loginInfo: {
+        email,
+        photoURL
+      }
+    },
+  } = controller;
+
+ const {doError} = EventFeature();
+
+  const signInWithGoogle = async () =>{
+    try {
+      const signIn = await signInWithPopup(auth,provider)
+      if(signIn) {
+        if(_.includes(Object.values(UUID), signIn.user.uid)) {
+          setLogin(dispatch,)
+          navigate('/dashboard')
+        }
+        else {
+          doError({error:true,message:'Wrong User Authentication'})
+        }
+      } else {
+        doError({error:true,message:'Some thing went wrong'})
+      }
+    }
+    catch(err) {
+      doError({error:true,message:err})
+    }
+    
+    
+  }
+
+
 
   return (
     <BasicLayout image={bgImage}>
@@ -61,70 +97,24 @@ function Basic() {
           textAlign="center"
         >
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
-            Sign in
+            Login With Google
           </MDTypography>
           <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
             <Grid item xs={2}>
               <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
-                <GoogleIcon color="inherit" />
+                <GoogleIcon 
+                  onClick={signInWithGoogle}
+                  color="inherit" 
+                />
               </MDTypography>
             </Grid>
           </Grid>
         </MDBox>
-        <MDBox pt={4} pb={3} px={3}>
-          {/* tao tk mk  */}
-          <MDBox component="form" role="form">
-            <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
-            </MDBox>
-            <MDBox mb={2}>
-              {/* dung event onChange */}
-              <MDInput type="password" label="Password" fullWidth />
-            </MDBox>
-            <MDBox display="flex" alignItems="center" ml={-1}>
-              <Switch checked={rememberMe} onChange={handleSetRememberMe} />
-              <MDTypography
-                variant="button"
-                fontWeight="regular"
-                color="text"
-                onClick={handleSetRememberMe}
-                sx={{ cursor: "pointer", userSelect: "none", ml: -1 }}
-              >
-                &nbsp;&nbsp;Remember me
-              </MDTypography>
-            </MDBox>
-            <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
-                sign in
-              </MDButton>
-            </MDBox>
-            <MDBox mt={3} mb={1} textAlign="center">
-              <MDTypography variant="button" color="text">
-                Don&apos;t have an account?{" "}
-                <MDTypography
-                  component={Link}
-                  to="/authentication/sign-up"
-                  variant="button"
-                  color="info"
-                  fontWeight="medium"
-                  textGradient
-                >
-                  Sign up
-                </MDTypography>
-              </MDTypography>
-            </MDBox>
-          </MDBox>
-        </MDBox>
+        {/* <MDBox mt={3} mb={1} textAlign="center">
+          <MDTypography variant="button" color="text">
+            Don't Have Account? <MDTypography sx={{cursor:'pointer'}}>Sign Up</MDTypography>
+          </MDTypography>
+        </MDBox> */}
       </Card>
     </BasicLayout>
   );

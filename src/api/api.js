@@ -95,6 +95,11 @@ class Api
         return axios(config)
     }
 
+    Login()
+    {
+        
+    }
+
     getAllCategories()
     {
         return this.Request('get',`${this.baseURL}/api/Category/get-all-category`)     
@@ -116,10 +121,35 @@ class Api
         return this.Request('get',`${this.baseURL}/api/Product/get-all-product`)     
     }
     
-    CreateProduct()
+    CreateProduct(rowData)
     {
+        const {
+            name,
+            price,
+            quantity,
+            manufacturerId,
+            categoryId,
+            storeId,
+            isService,
+            isActive,
+            } = rowData;
 
+        const payload = {
+            data : {
+                name,
+                price,
+                quantity,
+                manufacturerId,
+                categoryId,
+                storeId,
+                isService,
+                isActive,
+            }
+        }
+        return this.Request('post',`${this.baseURL}/api/Product`,payload)  
     }
+
+    
 
     EditProduct()
     {
